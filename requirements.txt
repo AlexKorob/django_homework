@@ -1,0 +1,4 @@
+Django==2.1.5
+django-debug-toolbar==1.11
+pytz==2018.9
+sqlparse==0.2.4
