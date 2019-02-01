@@ -1,0 +1,58 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.main {
+  width: 1080px;
+  margin: 0 auto;
+}
+ul {
+  padding: 0;
+}
+header {
+  width: 1080px;
+  margin: 0 auto;
+  margin-top: 5px;
+}
+
+header>nav>.search_form {
+  width: 320px;
+  padding-right: 40px;
+  float: right;
+}
+
+.search_form>button:hover {
+  background-color: #a33;
+  color: white;
+}
+
+.card {
+  margin-bottom: 30px;
+}
+.card-body {
+  width: 400px;
+  margin:0 auto;
+  background-color: #ddd;
+  border-radius: 10px;
+  padding: 20px 0;
+}
+
+.card-title {
+  margin-top: 0;
+  text-align: center;
+}
+
+/* question */
+.question {
+  width: 800px;
+}
+
+/* success */
+.text-success {
+  color: #3a3;
+}
+.text-success>p {
+  color: #ccc;
+  font-size: 12px;
+}

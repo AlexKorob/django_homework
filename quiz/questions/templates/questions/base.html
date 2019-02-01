@@ -1,0 +1,37 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Questions</title>
+  <link href="{% static 'questions/style.css' %}" rel="stylesheet">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+  {% block head %} {% endblock %}
+</head>
+<body>
+  <header>
+    <nav class="navbar navbar-light bg-light">
+      <a  href = "{% url 'list_tests' %}" class="btn btn-primary my-2 my-sm-0"> На главную </a>
+      <form class="form-inline search_form" action="{% url 'list_tests' %}" method="GET">
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"> Поиск </button>
+      </form>
+    </nav>
+  </header>
+
+  <article class="main">
+    {% block content %}
+    {% endblock %}
+  </article>
+
+  <footer>
+
+  </footer>
+</body>
+</html>

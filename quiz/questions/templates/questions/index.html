@@ -1,0 +1,14 @@
+{% extends "questions/base.html" %}
+
+{% block content %}
+  {% for test in tests %}
+    <div class="card w-75">
+      <div class="card-body">
+        <h4 class="card-title">{{ test.title }}</h4>
+        <div class="text-center">
+          <a href="{% url 'test_detail' test.id %}" class="btn_test btn btn-primary">К тесту</a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}

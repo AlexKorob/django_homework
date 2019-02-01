@@ -1,0 +1,26 @@
+{% extends "questions/base.html" %}
+
+{% block content %}
+  <div class="card w-75">
+    <div class="card-body question">
+      <h4 class="card-title">{{ question.question }}</h4>
+        <div class="text-center">
+          {% if errors %}
+            <div class="alert-danger">
+              {{ errors }}
+            </div>
+          {% endif %}
+          <form action="{% url 'question_name' test_id question_id %}" method="POST">
+            {% csrf_token %}
+            <textarea name="answer" cols="80" rows="10" style="resize:none;"></textarea>
+            <br>
+            {% if next_question %}
+              <input type="submit" name="next" class="btn_test btn btn-primary" value="Сделующий">
+            {% else %}
+              <input type="submit" name="final" class="btn_test btn btn-primary" value="Завершить">
+            {% endif %}
+          </form>
+        </div>
+    </div>
+  </div>
+{% endblock %}
