@@ -7,7 +7,7 @@
     <h3 class="card-title">{{ test.title }}</h3>
     <div class="text-center">
       <p class="description">{{ test.description }}</p>
-      <a href="{% url 'question_name' test.id question.id %}" class=" btn btn-primary ">Пройти тест</a>
+      <a href="{% url 'questions' test.id %}" class=" btn btn-primary ">Пройти тест</a>
     </div>
   </div>
 </div>

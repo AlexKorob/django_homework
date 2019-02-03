@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class Test(models.Model):
     STATUS_DRAFT = 10
     PUBLISHED = 20
@@ -41,4 +40,4 @@ class Testrun(models.Model):
     answer = models.TextField(max_length=500, error_messages={"required": "Поле ответа не может быть пустым"})
 
     def __str__(self):
-        return str(self.name) + " | " + str(self.test)
+        return str(self.id) + " | " + str(self.name) + " | " + str(self.test)
