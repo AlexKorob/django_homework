@@ -1,4 +1,4 @@
-## Quiz site
+## Quiz site(task 1)
 
 ```bash
   git clone https://github.com/AlexKorob/django_homework.git
