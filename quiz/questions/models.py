@@ -44,11 +44,19 @@ class Question(models.Model):
 class Testrun(models.Model):
     name = models.CharField(max_length=40, blank=True)
     test = models.ForeignKey(Test, related_name='testruns', on_delete=models.CASCADE)
-    question = models.ForeignKey(Question, related_name='testruns', on_delete=models.CASCADE)
-    answer = models.TextField(max_length=500, error_messages={"required": "Поле ответа не может быть пустым"})
+    answer = models.ManyToManyField(Question, related_name="testruns", through="TestrunAnswer")
 
     class Meta:
-        ordering = ['-id']
+        ordering = ['id']
 
     def __str__(self):
         return str(self.name) + " | " + str(self.test)
+
+
+class TestrunAnswer(models.Model):
+    testrun = models.ForeignKey(Testrun, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="testrun_answer")
+    answer = models.CharField(max_length=120)
+
+    def __str__(self):
+        return  str(self.testrun) + " | " + str(self.question) + " | " + str(self.answer)

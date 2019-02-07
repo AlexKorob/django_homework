@@ -7,14 +7,13 @@
         {% csrf_token %}
         <h4 class="card-title">Детали теста</h4>
           <ul style="margin: 20px 0 10px 40px;">
-          {% for testrun in testruns %}
+            {% for test in testrun %}
             <li style="display: inline-block; font-size: 16px; margin-bottom: 10px;">
-              {{forloop.counter }}. {{ testrun.question }}  | <span style="color: #a33;"> {{ testrun.answer }} </span>
+              {{ test.question }}  | <span style="color: #a33;"> {{ test.answer }} </span>
             </li>
             <br>
-          {% endfor %}
+            {% endfor %}
           <div class="text-center">
-            <br>
             <a  href = "{% url 'testruns' %}" class="btn btn-primary my-2 my-sm-0"> К пройденным тестам </a>
           </div>
         </ul>

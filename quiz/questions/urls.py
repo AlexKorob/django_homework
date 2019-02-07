@@ -7,7 +7,7 @@ urlpatterns = [
     path('<int:test_id>/', views.test_detail, name="test_detail"),
     path('test/<int:test_id>/', views.testrun, name="test"),
     path('testruns/', views.testrun_list, name="testruns"),
-    path('testruns/<str:name>/', views.testrun_detail, name="testrun_detail"),
+    path('testruns/<int:id>/', views.testrun_detail, name="testrun_detail"),
 
     path('questions/', views.QuestionListView.as_view(), name="questions_show"),
     path('question/create/', views.QuestionCreate.as_view(), name="question_create"),

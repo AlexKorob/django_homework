@@ -1,5 +1,5 @@
 from django import forms
-from .models import Question, Test
+from .models import Question, Test, TestrunAnswer, Testrun
 
 
 class QuestionForm(forms.ModelForm):
@@ -34,9 +34,19 @@ class TestForm(forms.ModelForm):
         return self.cleaned_data["questions"]
 
 
-class TestrunForm(forms.Form):
+class TestrunAnswerForm(forms.ModelForm):
+    class Meta:
+        model = TestrunAnswer
+        fields = ["answer", ]
+
     def clean(self):
         for data in self.cleaned_data.values():
             if len(data) <= 1:
                 raise forms.ValidationError("Поле должно быть заполнено")
         return self.cleaned_data
+
+
+class TestrunForm(forms.ModelForm):
+    class Meta:
+        model = Testrun
+        fields = ["name", "test", "answer"]
