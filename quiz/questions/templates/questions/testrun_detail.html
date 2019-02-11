@@ -13,10 +13,20 @@
             </li>
             <br>
             {% endfor %}
+            <p class="text-muted">
+              ЗАМЕТКИ: &nbsp;
+              {% for note in notes %}
+                {{ note.name }}{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            </p>
           <div class="text-center">
             <a  href = "{% url 'testruns' %}" class="btn btn-primary my-2 my-sm-0"> К пройденным тестам </a>
           </div>
         </ul>
     </div>
   </div>
+{% endblock %}
+
+{% block footer_btn %}
+  <a href = "{% url 'testrun_add_notes' testrun_id %}" class="btn btn-primary my-2 my-sm-0" style="display: block; margin-bottom: 5px;"> Добавить Заметки </a>
 {% endblock %}

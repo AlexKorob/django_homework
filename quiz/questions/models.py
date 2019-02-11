@@ -1,5 +1,7 @@
 from django.db import models
 from django.shortcuts import reverse
+from django.contrib.contenttypes.fields import GenericRelation
+from notes.models import NoteItem
 
 
 class Test(models.Model):
@@ -19,6 +21,7 @@ class Test(models.Model):
     questions = models.ManyToManyField("Question", related_name="tests")
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateField(auto_now=True)
+    note = GenericRelation(NoteItem)
 
     class Meta:
         ordering = ['-created_on']
@@ -45,12 +48,16 @@ class Testrun(models.Model):
     name = models.CharField(max_length=40, blank=True)
     test = models.ForeignKey(Test, related_name='testruns', on_delete=models.CASCADE)
     answer = models.ManyToManyField(Question, related_name="testruns", through="TestrunAnswer")
+    note = GenericRelation(NoteItem)
 
     class Meta:
         ordering = ['id']
 
     def __str__(self):
         return str(self.name) + " | " + str(self.test)
+
+    def get_absolute_url(self):
+        return reverse("tests_show")
 
 
 class TestrunAnswer(models.Model):
@@ -59,4 +66,4 @@ class TestrunAnswer(models.Model):
     answer = models.CharField(max_length=120)
 
     def __str__(self):
-        return  str(self.testrun) + " | " + str(self.question) + " | " + str(self.answer)
+        return str(self.testrun) + " | " + str(self.question) + " | " + str(self.answer)
