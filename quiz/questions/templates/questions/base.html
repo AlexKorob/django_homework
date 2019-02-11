@@ -18,7 +18,7 @@
     <nav class="navbar navbar-light bg-light">
       <a  href = "{% url 'list_tests' %}" class="btn btn-primary my-2 my-sm-0"> На главную </a>
       <a  href = "{% url 'testruns' %}" class="btn btn-primary my-2 my-sm-0"> Пройденные тесты </a>
-      <a  href = "{% url 'question_create' %}" class="btn btn-danger my-2 my-sm-0"> + Создать Ворос </a>
+      <a  href = "{% url 'question_create' %}" class="btn btn-danger my-2 my-sm-0"> + Создать Вопрос </a>
       <a  href = "{% url 'test_create' %}" class="btn btn-danger my-2 my-sm-0"> + Создать Тест </a>
       <form class="form-inline search_form" action="{% url 'list_tests' %}" method="GET">
         <input class="form-control mr-sm-2" type="search" name="search" placeholder="Поиск" aria-label="Search">

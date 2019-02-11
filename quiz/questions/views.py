@@ -3,8 +3,11 @@ from django.shortcuts import render
 from .models import Test, Testrun, Question, TestrunAnswer
 from django.db.models import Q
 from .forms import QuestionForm, TestForm, TestrunAnswerForm
+from notes.models import Note
+from django.contrib.contenttypes.models import ContentType
 
 from .utils import ObjectCreateMixin, ObjectUpdateMixin
+from notes.utils import NoteCreateMixin
 from django.views.generic import View, ListView
 
 
@@ -22,7 +25,15 @@ def index(request):
 def test_detail(request, test_id):
     test = Test.objects.get(id=test_id)
     questions = Question.objects.filter(tests__id=test_id)
-    return render(request, "questions/test_detail.html", context={"test": test, "questions": questions})
+    content_type = ContentType.objects.get_for_model(test)
+    notes = Note.objects.filter(note_item__content_type=content_type, note_item__object_id=test.id)
+    return render(request, "questions/test_detail.html", context={"test": test, "questions": questions, "notes": notes})
+
+
+class TestAddNotes(NoteCreateMixin, View):
+    app_label = "questions"
+    model = "test"
+    template_name = "questions/add_notes.html"
 
 
 def testrun(request, test_id):
@@ -54,17 +65,22 @@ def testrun(request, test_id):
                 errors = []
                 errors.append("Не все поля заполнены!")
                 data = zip(formset, questions)
-                print("form.errors:", errors)
                 context = {"test_id": test_id, "data": data, "errors": errors}
                 testrun.delete()
                 return render(request, "questions/test.html", context=context)
 
         for i in range(num_quest):
             testrun_answer = TestrunAnswer.objects.create(testrun=testrun,
-                                          question_id=questions[i].id,
-                                          answer=formset[i].data)
+                                                          question_id=questions[i].id,
+                                                          answer=formset[i].data)
             testrun_answer.save()
         return render(request, "questions/success.html")
+
+
+class TestrunAddNotes(NoteCreateMixin, View):
+    app_label = "questions"
+    model = "testrun"
+    template_name = "questions/add_notes.html"
 
 
 def testrun_list(request):
@@ -74,7 +90,11 @@ def testrun_list(request):
 
 def testrun_detail(request, id):
     testrun = TestrunAnswer.objects.filter(testrun_id=id).select_related("question")
-    return render(request, "questions/testrun_detail.html", context={"testrun": testrun})
+    content_type = ContentType.objects.get_by_natural_key(app_label="questions", model="testrun")
+    notes = Note.objects.filter(note_item__content_type=content_type, note_item__object_id=id)
+    return render(request, "questions/testrun_detail.html", context={"testrun": testrun,
+                                                                     "notes": notes,
+                                                                     "testrun_id": id})
 
 
 class QuestionListView(ListView):
