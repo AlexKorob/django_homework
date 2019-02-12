@@ -1,4 +1,6 @@
 {% load staticfiles %}
+{% load custom_filters %}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,9 +19,19 @@
   <header>
     <nav class="navbar navbar-light bg-light">
       <a  href = "{% url 'list_tests' %}" class="btn btn-primary my-2 my-sm-0"> На главную </a>
+      {% if request.user|has_group:"users" %}
       <a  href = "{% url 'testruns' %}" class="btn btn-primary my-2 my-sm-0"> Пройденные тесты </a>
+      {% elif request.user|has_group:"authors" %}
       <a  href = "{% url 'question_create' %}" class="btn btn-danger my-2 my-sm-0"> + Создать Вопрос </a>
       <a  href = "{% url 'test_create' %}" class="btn btn-danger my-2 my-sm-0"> + Создать Тест </a>
+      {% endif %}
+      {% if request.user.is_authenticated %}
+        <p class="" style="display: inline-block; text-align: center; border-radius: 5px; border: 1px solid black; padding: 7px; width: 300px;">Добро пожаловать <span style="color: #a33;">{{ request.user.username }}</span></p>
+        <a  href = "{% url 'user_logout' %}" class="btn btn-danger my-2 my-sm-0">Выйти</a>
+      {% else %}
+        <a  href = "{% url 'user_login' %}" class="btn btn-primary my-2 my-sm-0">Вход</a>
+        <a  href = "{% url 'user_create' %}" class="btn btn-primary my-2 my-sm-0">Регистрация</a>
+      {% endif %}
       <form class="form-inline search_form" action="{% url 'list_tests' %}" method="GET">
         <input class="form-control mr-sm-2" type="search" name="search" placeholder="Поиск" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit"> Поиск </button>
@@ -33,11 +45,13 @@
   </article>
 
   <footer>
+      {% if request.user.is_authenticated %}
       <div class="button_bottom">
         <a href = "{% url 'questions_show' %}" class="btn btn-primary my-2 my-sm-0" style="display: block; margin-bottom: 5px;"> Все вопросы </a>
         {% block footer_btn %}
         {% endblock %}
-    </div>
+      </div>
+      {% endif %}
   </footer>
 </body>
 </html>

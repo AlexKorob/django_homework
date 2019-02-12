@@ -19,4 +19,8 @@ urlpatterns = [
     path('test/update/<int:id>/', views.TestUpdate.as_view(), name="test_update"),
     path('test/add_notes/<int:id>', views.TestAddNotes.as_view(), name="test_add_notes"),
 
+    path('register/', views.UserCreate.as_view(), name="user_create"),
+    path('login/', views.UserAuthentication.as_view(), name="user_login"),
+    path('logout/', views.UserLogout.as_view(), name="user_logout")
+
 ]

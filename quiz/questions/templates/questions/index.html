@@ -1,14 +1,22 @@
 {% extends "questions/base.html" %}
 
 {% block content %}
-  {% for test in tests %}
-    <div class="card w-75">
-      <div class="card-body">
-        <h4 class="card-title">{{ test.title }}</h4>
-        <div class="text-center">
-          <a href="{% url 'test_detail' test.id %}" class="btn_test btn btn-primary">К тесту</a>
+  {% if request.user.is_authenticated %}
+    {% for test in tests %}
+      <div class="card w-75">
+        <div class="card-body">
+          <h4 class="card-title">{{ test.title }}</h4>
+          <div class="text-center">
+            <a href="{% url 'test_detail' test.id %}" class="btn_test btn btn-primary">К тесту</a>
+          </div>
         </div>
       </div>
+    {% endfor %}
+  {% else %}
+    <div class="card w-75" style="margin-top: 200px;">
+      <div class="text-center">
+        <h2 class="text-muted">Войдите или зарегистрируйтесь что бы просмотреть тесты</h2>
+      </div>
     </div>
-  {% endfor %}
+  {% endif %}
 {% endblock %}

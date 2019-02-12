@@ -1,5 +1,7 @@
 from django import forms
 from .models import Question, Test, TestrunAnswer, Testrun
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 
 class QuestionForm(forms.ModelForm):
@@ -50,3 +52,31 @@ class TestrunForm(forms.ModelForm):
     class Meta:
         model = Testrun
         fields = ["name", "test", "answer"]
+
+
+class UserCreateForm(UserCreationForm):
+    UserCreationForm.error_messages = {
+        'password_mismatch': "Пароли не совпадают",
+    }
+
+    class Meta:
+        model = User
+        fields = ["username", "first_name", "last_name", "email"]
+
+    def clean_username(self):
+        username = self.cleaned_data["username"]
+        if User.objects.filter(username=username):
+            raise forms.ValidationError("Такой Логин уже существует")
+        elif len(username) <= 2:
+            raise forms.ValidationError("Логин не может состоять менее чем из 3-х символов!")
+        return username
+
+    def clean_first_name(self):
+        if len(self.cleaned_data["first_name"]) <= 2:
+            raise forms.ValidationError("Имя не может состоять менее чем из 3-х символов!")
+        return self.cleaned_data['first_name']
+
+    def clean_last_name(self):
+        if len(self.cleaned_data["last_name"]) <= 2:
+            raise forms.ValidationError("Фамилия не может состоять менее чем из 3-х символов!")
+        return self.cleaned_data['last_name']
