@@ -19,26 +19,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.core.exceptions import PermissionDenied
 
 
-def check_user_in_users_group(user):
-    if user.groups.filter(name="users").exists():
-        return True
-    else:
-        raise PermissionDenied()
-
-
-def check_user_in_authors_group(user):
-    if user.groups.filter(name="authors").exists():
-        return True
-    else:
-        raise PermissionDenied()
-
-
 def index(request):
     search_query = request.GET.get("search", '')
     if search_query:
-        # Q(title__icontains=search_query) - "i" указывает на регистронезависимый поиск
-        tests = Test.objects.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query),
-                                    status=Test.PUBLISHED)
+        if request.user.groups.filter(name="authors").exists():
+            # Q(title__icontains=search_query) - "i" указывает на регистронезависимый поиск
+            tests = Test.objects.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query),
+                                    status=Test.PUBLISHED, creator_id=request.user.id)
+        else:
+            tests = Test.objects.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query),
+                                        status=Test.PUBLISHED)
     else:
         if request.user.groups.filter(name="authors").exists():
             tests = Test.objects.filter(status=Test.PUBLISHED, creator_id=request.user.id)
@@ -57,17 +47,22 @@ def test_detail(request, test_id):
     return render(request, "questions/test_detail.html", context={"test": test, "questions": questions, "notes": notes})
 
 
-class TestAddNotes(PermissionRequiredMixin, LoginRequiredMixin, NoteCreateMixin, View):
-    permission_required = "questions.test"
+class TestAddNotes(LoginRequiredMixin, PermissionRequiredMixin, NoteCreateMixin, View):
+    permission_required = "questions.add_test"
     raise_exception = True
     app_label = "questions"
     model = "test"
     template_name = "questions/add_notes.html"
 
+    def get(self, request, id):
+        test = Test.objects.get(id=id)
+        if request.user.id != test.creator_id:
+            raise PermissionDenied()
+        return NoteCreateMixin.get(self, request, id)
+
 
 @login_required
-# @permission_required("questions.testrun", raise_exception=True)
-@user_passes_test(check_user_in_users_group)
+@permission_required("questions.add_testrun", raise_exception=True)
 def testrun(request, test_id):
     num_quest = Question.objects.filter(tests__id=test_id).count()
     questions = Question.objects.filter(tests__id=test_id)
@@ -107,25 +102,27 @@ def testrun(request, test_id):
         return render(request, "questions/success.html")
 
 
-class TestrunAddNotes(NoteCreateMixin, View):
+class TestrunAddNotes(LoginRequiredMixin, PermissionRequiredMixin, NoteCreateMixin, View):
     app_label = "questions"
     model = "testrun"
     template_name = "questions/add_notes.html"
+    raise_exception = True
+    permission_required = "questions.change_testrun"
 
 
 @login_required
-#@permission_required("questions.testrun", raise_exception=True)
-@user_passes_test(check_user_in_users_group)
+@permission_required("questions.view_testrun", raise_exception=True)
 def testrun_list(request):
-    name = request.user.username
-    permissions = Permission.objects.filter(user=request.user)
-    print("PERMISSIONS: ", permissions)
-    testruns = Testrun.objects.filter(name=name).order_by("-id")
+    if request.user.groups.filter(name="moderators"):
+        testruns = Testrun.objects.all().order_by("-id")
+    else:
+        name = request.user.username
+        testruns = Testrun.objects.filter(name=name).order_by("-id")
     return render(request, "questions/testrun_list.html", context={"testruns": testruns})
 
 
 @login_required
-@user_passes_test(check_user_in_users_group)
+@permission_required("questions.view_testrun", raise_exception=True)
 def testrun_detail(request, id):
     testrun = TestrunAnswer.objects.filter(testrun_id=id).select_related("question")
     content_type = ContentType.objects.get_by_natural_key(app_label="questions", model="testrun")
@@ -141,35 +138,55 @@ class QuestionListView(ListView):
     context_object_name = "questions"
 
 
-class QuestionCreate(ObjectCreateMixin, View):
+class QuestionCreate(LoginRequiredMixin, PermissionRequiredMixin, ObjectCreateMixin, View):
     form_model = QuestionForm
     template = "questions/question_create.html"
+    raise_exception = True
+    permission_required = "questions.add_question"
 
 
-class QuestionUpdate(ObjectUpdateMixin, View):
+class QuestionUpdate(LoginRequiredMixin, PermissionRequiredMixin, ObjectUpdateMixin, View):
     model = Question
     form_model = QuestionForm
     template = "questions/question_update.html"
+    permission_required = "questions.change_question"
+    raise_exception = True
 
 
-class TestListView(ListView):
-    model = Test
-    template = "questions/tests.html"
-    context_object_name = "test"
-
-
-class TestCreate(ObjectCreateMixin, View):
+class TestCreate(LoginRequiredMixin, PermissionRequiredMixin, ObjectCreateMixin, View):
     form_model = TestForm
     template = "questions/test_create.html"
+    raise_exception = True
+    permission_required = "questions.add_test"
 
-    def dispatch(self, request, *args, **kwargs):
-        request.POST["creator"] = request.user.id
-        return super().dispatch(request, *args, **kwargs)
+    def post(self, request):
+        bound_form = self.form_model(request.POST)
 
-class TestUpdate(ObjectUpdateMixin, View):
+        if bound_form.is_valid():
+            test = Test.objects.create(title=bound_form.cleaned_data["title"],
+                                       description=bound_form.cleaned_data["description"],
+                                       creator=request.user,
+                                       status=bound_form.cleaned_data["status"])
+            print("BOUND_FORM: ", bound_form.cleaned_data["questions"])
+            test.questions.set([quest for quest in bound_form.cleaned_data["questions"]])
+            return redirect(test)
+        else:
+            return render(request, self.template, {'form': bound_form, "errors": bound_form.errors})
+
+
+class TestUpdate(LoginRequiredMixin, PermissionRequiredMixin, ObjectUpdateMixin, View):
     model = Test
     form_model = TestForm
     template = "questions/test_update.html"
+    raise_exception = True
+    permission_required = "questions.change_test"
+
+    def get(self, request, id):
+        test = Test.objects.get(id=id)
+        if request.user.id == test.creator_id or request.user.groups.filter(name="moderators").exists():
+            return ObjectUpdateMixin.get(self, request, id)
+        else:
+            raise PermissionDenied()
 
 
 class UserCreate(View):

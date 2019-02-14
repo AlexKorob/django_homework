@@ -14,7 +14,6 @@ urlpatterns = [
     path('question/create/', views.QuestionCreate.as_view(), name="question_create"),
     path('question/update/<int:id>/', views.QuestionUpdate.as_view(), name="question_update"),
 
-    path('tests/', views.TestListView.as_view(), name="tests_show"),
     path('test/create/', views.TestCreate.as_view(), name="test_create"),
     path('test/update/<int:id>/', views.TestUpdate.as_view(), name="test_update"),
     path('test/add_notes/<int:id>', views.TestAddNotes.as_view(), name="test_add_notes"),

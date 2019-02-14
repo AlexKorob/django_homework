@@ -24,6 +24,8 @@
       {% elif request.user|has_group:"authors" %}
       <a  href = "{% url 'question_create' %}" class="btn btn-danger my-2 my-sm-0"> + Создать Вопрос </a>
       <a  href = "{% url 'test_create' %}" class="btn btn-danger my-2 my-sm-0"> + Создать Тест </a>
+      {% elif request.user|has_group:"moderators" %}
+      <a  href = "{% url 'testruns' %}" class="btn btn-primary my-2 my-sm-0">  Все пройденные тесты </a>
       {% endif %}
       {% if request.user.is_authenticated %}
         <p class="" style="display: inline-block; text-align: center; border-radius: 5px; border: 1px solid black; padding: 7px; width: 300px;">Добро пожаловать <span style="color: #a33;">{{ request.user.username }}</span></p>
