@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.contenttypes.models import ContentType
 
 from .utils import ObjectCreateMixin, ObjectUpdateMixin
-from notes.utils import NoteCreateMixin
+from notes.utils import NoteCreateMixin,  NoteDeleteMixin
 from django.views.generic import View, ListView
 from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.forms import AuthenticationForm
@@ -61,6 +61,13 @@ class TestAddNotes(LoginRequiredMixin, PermissionRequiredMixin, NoteCreateMixin,
         return NoteCreateMixin.get(self, request, id)
 
 
+class TestDeleteNotes(LoginRequiredMixin, PermissionRequiredMixin, NoteDeleteMixin, View):
+    permission_required = "questions.add_test"
+    raise_exception = True
+    app_label = "questions"
+    model = "test"
+
+
 @login_required
 @permission_required("questions.add_testrun", raise_exception=True)
 def testrun(request, test_id):
@@ -108,6 +115,13 @@ class TestrunAddNotes(LoginRequiredMixin, PermissionRequiredMixin, NoteCreateMix
     template_name = "questions/add_notes.html"
     raise_exception = True
     permission_required = "questions.change_testrun"
+
+
+class TestrunDeleteNotes(LoginRequiredMixin, PermissionRequiredMixin, NoteDeleteMixin, View):
+    permission_required = "questions.change_testrun"
+    raise_exception = True
+    app_label = "questions"
+    model = "testrun"
 
 
 @login_required

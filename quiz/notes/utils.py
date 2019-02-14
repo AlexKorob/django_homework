@@ -21,3 +21,15 @@ class NoteCreateMixin:
         note = Note.objects.get(name=note_name)
         NoteItem.objects.create(content_type=content_type, object_id=id, note=note)
         return HttpResponse("OK")
+
+
+class NoteDeleteMixin:
+    app_label = None
+    model = None
+
+    def post(self, request, id):
+        content_type = ContentType.objects.get_by_natural_key(app_label=self.app_label, model=self.model)
+        note_name = request.POST["note"]
+        note = Note.objects.get(name=note_name)
+        NoteItem.objects.get(content_type=content_type, object_id=id, note=note).delete()
+        return HttpResponse("OK")

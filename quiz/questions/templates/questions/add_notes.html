@@ -9,7 +9,7 @@
 
 {% block content %}
 <div style="display: flex;">
-  <div style="width: 400px; margin-left: 50px;">
+  <div id="not_added_notes" style="width: 400px; margin-left: 50px;">
     <h3 style="padding-bottom: 20px;">Добавить Заметки:</h3>
     {% for note in notes %}
       <p class="note btn btn-primary" id="note-{{ forloop.counter }}" style="margin-bottom: 20px; padding: 15px; display: block; cursor: pointer; font-size: 20px;">{{ note.name }}</p>
@@ -19,7 +19,7 @@
   <div id="added_notes" style="margin-left: 250px;">
     <h3 style="padding-bottom: 20px;">Добавленные заметки: </h3>
     {% for note in added_notes %}
-      <p class="" style="text-align: center; border-radius: 10px; border: 2px solid black; margin-bottom: 10px; padding: 15px; font-size: 20px;">{{ note.name }}</p><br>
+      <p class="del-note" style="text-align: center; border-radius: 10px; border: 2px solid black; margin-bottom: 10px; padding: 15px; font-size: 20px;">{{ note.name }}</p><br>
     {% endfor %}
   </div>
 

@@ -9,6 +9,7 @@ urlpatterns = [
     path('testruns/', views.testrun_list, name="testruns"),
     path('testruns/<int:id>/', views.testrun_detail, name="testrun_detail"),
     path('testrun/add_notes/<int:id>', views.TestrunAddNotes.as_view(), name="testrun_add_notes"),
+    path('testrun/delete_notes/<int:id>', views.TestrunDeleteNotes.as_view(), name="testrun_delete_notes"),
 
     path('questions/', views.QuestionListView.as_view(), name="questions_show"),
     path('question/create/', views.QuestionCreate.as_view(), name="question_create"),
@@ -17,6 +18,7 @@ urlpatterns = [
     path('test/create/', views.TestCreate.as_view(), name="test_create"),
     path('test/update/<int:id>/', views.TestUpdate.as_view(), name="test_update"),
     path('test/add_notes/<int:id>', views.TestAddNotes.as_view(), name="test_add_notes"),
+    path('test/delete_notes/<int:id>', views.TestDeleteNotes.as_view(), name="test_delete_notes"),
 
     path('register/', views.UserCreate.as_view(), name="user_create"),
     path('login/', views.UserAuthentication.as_view(), name="user_login"),
