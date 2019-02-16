@@ -27,15 +27,15 @@ Permissions moderators:
   * add notes to testrun
 
 superuser:
-  login: alex; password: 123
+  * login: alex; password: 123
 
 user:
-  login: alex1; password: hello1209
-  login: alex2; password: hello1209
+  * login: alex1; password: hello1209
+  * login: alex2; password: hello1209
 
 authors:
-  login: vasya; password: hello1209
-  login: Petro; password: hello1209
+  * login: vasya; password: hello1209
+  * login: Petro; password: hello1209
 
 moderator:
-  login: Oleg; password: hello1209
+  * login: Oleg; password: hello1209
