@@ -1,4 +1,5 @@
 import time
+from datetime import datetime, timedelta, timezone
 from django.shortcuts import render
 from .models import Test, Testrun, Question, TestrunAnswer
 from django.db.models import Q
@@ -17,6 +18,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
+from .tasks import task_block_test
 
 
 def index(request):
@@ -25,7 +27,7 @@ def index(request):
         if request.user.groups.filter(name="authors").exists():
             # Q(title__icontains=search_query) - "i" указывает на регистронезависимый поиск
             tests = Test.objects.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query),
-                                    status=Test.PUBLISHED, creator_id=request.user.id)
+                                        status=Test.PUBLISHED, creator_id=request.user.id)
         else:
             tests = Test.objects.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query),
                                         status=Test.PUBLISHED)
@@ -35,12 +37,20 @@ def index(request):
         else:
             tests = Test.objects.filter(status=Test.PUBLISHED)
 
+    for test in tests:
+        now_time = datetime.now(timezone.utc)
+        when_deleted = test.created_on + timedelta(days=3)
+        test.deactivate_on = when_deleted - now_time
+
     return render(request, "questions/index.html", context={"tests": tests})
 
 
 @login_required
 def test_detail(request, test_id):
     test = Test.objects.get(id=test_id)
+    if test.blocked == True:
+        raise PermissionDenied("This test is deleted")
+
     questions = Question.objects.filter(tests__id=test_id)
     content_type = ContentType.objects.get_for_model(test)
     notes = Note.objects.filter(note_item__content_type=content_type, note_item__object_id=test.id)
@@ -75,6 +85,10 @@ def testrun(request, test_id):
     questions = Question.objects.filter(tests__id=test_id)
 
     if request.method == "GET":
+        test = Test.objects.get(id=test_id)
+        if test.blocked == True:
+            raise PermissionDenied("This test is deleted")
+
         formset = []
         for i in range(num_quest):
             formset.append(TestrunAnswerForm())
@@ -181,8 +195,9 @@ class TestCreate(LoginRequiredMixin, PermissionRequiredMixin, ObjectCreateMixin,
                                        description=bound_form.cleaned_data["description"],
                                        creator=request.user,
                                        status=bound_form.cleaned_data["status"])
-            print("BOUND_FORM: ", bound_form.cleaned_data["questions"])
             test.questions.set([quest for quest in bound_form.cleaned_data["questions"]])
+            # After three days test will disabled
+            task_block_test.apply_async((test.id, ), countdown=3*24*3600)
             return redirect(test)
         else:
             return render(request, self.template, {'form': bound_form, "errors": bound_form.errors})

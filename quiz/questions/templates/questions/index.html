@@ -7,7 +7,12 @@
         <div class="card-body">
           <h4 class="card-title">{{ test.title }}</h4>
           <div class="text-center">
-            <a href="{% url 'test_detail' test.id %}" class="btn_test btn btn-primary">К тесту</a>
+            {% if test.blocked %}
+              <a href="" class="btn_test btn btn-dark" style="pointer-events: none; cursor: default; text-decoration: none; color: black; font-size: 18px;">НЕ АКТИВЕН</a>
+            {% else %}
+              <a href="{% url 'test_detail' test.id %}" class="btn_test btn btn-primary">К тесту</a>
+              <p class="text-muted" style="padding-top: 10px; margin-bottom: -10px;">Станет недоступен через: {{ test.deactivate_on|stringformat:".18s" }}</p>
+            {% endif %}
           </div>
         </div>
       </div>

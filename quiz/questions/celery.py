@@ -10,19 +10,6 @@ app = Celery('quiz',
              broker="redis://localhost",
              backend="redis://localhost")
 
-
-app.conf.update({
-    "beat_schedule":{
-    	'add-every-10-seconds': {
-        	'task': 'questions.tasks.add',
-        	'schedule': 10.0,
-        	'args': (16, 16)
-        },
-    }
-})
-
-# app.config_from_object('django.conf:settings', namespace='CELERY')
-
 app.autodiscover_tasks()
 
 

@@ -23,6 +23,7 @@ class Test(models.Model):
     questions = models.ManyToManyField("Question", related_name="tests")
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateField(auto_now=True)
+    blocked = models.BooleanField(null=True, default=False)
     note = GenericRelation(NoteItem)
 
     class Meta:
