@@ -1,15 +1,14 @@
-$(function() {
+/*$(function() {*/
+$(document).ready(function(){
 
   // create note
-  $(".note").click(function() {
+  $(document).on('click','.note',function(e) {
     let val = $(this).text();
     $("<p>").attr({
       class: "del-note",
       style: "text-align: center; border-radius: 10px; border: 2px solid black;" +
               "margin-bottom: 10px; padding: 15px; font-size: 20px;"
     }).text(val).appendTo($("#added_notes"));
-  
-    $("<br>").appendTo($("#added_notes"));
 
     $(this).remove();
     let csrftoken = $("[name=csrfmiddlewaretoken]").val();
@@ -32,14 +31,12 @@ $(function() {
   });
 
   // delete note
-  $(".del-note").click(function() {
+  $(document).on('click','.del-note',function(e) {
     let val = $(this).text();
     $("<p>").attr({class: "note btn btn-primary",
                   style: "margin-bottom: 20px; padding: 15px; display: block;" +
                   "cursor: pointer; font-size: 20px;"
     }).text(val).appendTo($("#not_added_notes"));
-
-    $("<br>").appendTo($("#not_added_notes"));
 
     $(this).remove();
     let csrftoken = $("[name=csrfmiddlewaretoken]").val();
@@ -57,7 +54,7 @@ $(function() {
           }
       }
     });
-    alert(url)
+
     $.ajax({
 			type: "POST",
 			url: url,

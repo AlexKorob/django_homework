@@ -2,7 +2,6 @@
 {% load staticfiles %}
 
 {% block head %}
-  <script type="text/javascript" src="{% static 'questions/jquery3.3.1.js' %}"></script>
   <script type="text/javascript" src="{% static 'questions/Cookies.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'questions/add_notes.js' %}"></script>
 {% endblock %}
@@ -19,7 +18,7 @@
   <div id="added_notes" style="margin-left: 250px;">
     <h3 style="padding-bottom: 20px;">Добавленные заметки: </h3>
     {% for note in added_notes %}
-      <p class="del-note" style="text-align: center; border-radius: 10px; border: 2px solid black; margin-bottom: 10px; padding: 15px; font-size: 20px;">{{ note.name }}</p><br>
+      <p class="del-note"  style="text-align: center; border-radius: 10px; border: 2px solid black; margin-bottom: 10px; padding: 15px; font-size: 20px;">{{ note.name }}</p>
     {% endfor %}
   </div>
 
@@ -29,4 +28,8 @@
         <input type="submit" value="Добавить" hidden style="font-size: 20px;">
   </form>
 </div>
+
+<script>
+
+</script>
 {% endblock %}
