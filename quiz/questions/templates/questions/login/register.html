@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
-  <title>Регистрация</title>
+  <title>{% trans "Регистрация" %}</title>
   <style  type="text/css">
     label{
       width: 200px;
@@ -16,30 +18,30 @@
 </head>
 <body>
   <article class="main" style="width: 400px; margin: 0 auto;">
-    <h3 style="text-align: center; margin-bottom: 20px;">Регистрация</h3>
+    <h3 style="text-align: center; margin-bottom: 20px;">{% trans "Регистрация" %}</h3>
     <form action="" method="POST">
       {% csrf_token %}
       <div class="alert-danger">{{ errors.username }}</div>
-      <label for="id_username">Логин: </label>{{ form.username }}<br>
+      <label for="id_username">{% trans "Логин:" %} </label>{{ form.username }}<br>
 
       <div class="alert-danger">{{ errors.first_name }}</div>
-      <label for="id_first_name">Ваше имя: </label>{{ form.first_name }}<br>
+      <label for="id_first_name">{% trans "Ваше имя:" %} </label>{{ form.first_name }}<br>
 
       <div class="alert-danger">{{ errors.last_name }}</div>
-      <label for="id_last_name">Введите Фамилию: </label>{{ form.last_name }}<br>
+      <label for="id_last_name">{% trans "Введите Фамилию:" %} </label>{{ form.last_name }}<br>
 
       <div class="alert-danger">{{ errors.password2 }}</div>
-      <label for="id_password1">Введите пароль: </label>{{ form.password1 }}<br>
-      <label for="id_password2">Повторите пароль: </label>{{ form.password2 }}<br>
+      <label for="id_password1">{% trans "Введите пароль:" %} </label>{{ form.password1 }}<br>
+      <label for="id_password2">{% trans "Повторите пароль:" %} </label>{{ form.password2 }}<br>
 
-      <label for="id_user">Вы регистрируетесь как: </label>
+      <label for="id_user">{% trans "Вы регистрируетесь как:" %} </label>
       <select id="id_user" name="user">
-        <option value="user" selected>Пользователь</option>
-        <option value="author">Автор</option>
+        <option value="user" selected>{% trans "Пользователь" %}</option>
+        <option value="author">{% trans "Автор" %}</option>
       </select>
 
       <div class="text-center" style="margin-top: 20px;">
-        <button type="submit" class="btn btn-primary">Регистрация</button>
+        <button type="submit" class="btn btn-primary">{% trans "Регистрация" %}</button>
       </div>
     </form>
   </article>

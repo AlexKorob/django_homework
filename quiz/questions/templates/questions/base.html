@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load custom_filters %}
+{% load i18n %}
 
 
 <!DOCTYPE html>
@@ -8,35 +9,44 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Questions</title>
+  <title>{% trans "Тесты" %}</title>
   <link href="{% static 'questions/style.css' %}" rel="stylesheet">
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+  <script src="{% static 'questions/flags.js' %}"></script>
   {% block head %} {% endblock %}
 </head>
 <body>
   <header>
     <nav class="navbar navbar-light bg-light">
-      <a  href = "{% url 'list_tests' %}" class="btn btn-primary my-2 my-sm-0"> На главную </a>
+      <a  href = "{% url 'list_tests' %}" class="btn btn-primary my-2 my-sm-0"> {% trans "На главную" %} </a>
       {% if request.user|has_group:"users" %}
-      <a  href = "{% url 'testruns' %}" class="btn btn-primary my-2 my-sm-0"> Пройденные тесты </a>
+      <a  href = "{% url 'testruns' %}" class="btn btn-primary my-2 my-sm-0"> {% trans "Пройденные тесты" %} </a>
       {% elif request.user|has_group:"authors" %}
-      <a  href = "{% url 'question_create' %}" class="btn btn-danger my-2 my-sm-0"> + Создать Вопрос </a>
-      <a  href = "{% url 'test_create' %}" class="btn btn-danger my-2 my-sm-0"> + Создать Тест </a>
+      <a  href = "{% url 'question_create' %}" class="btn btn-danger my-2 my-sm-0"> {% trans "+ Создать Вопрос" %} </a>
+      <a  href = "{% url 'test_create' %}" class="btn btn-danger my-2 my-sm-0"> {% trans "+ Создать Тест" %} </a>
       {% elif request.user|has_group:"moderators" %}
-      <a  href = "{% url 'testruns' %}" class="btn btn-primary my-2 my-sm-0">  Все пройденные тесты </a>
+      <a  href = "{% url 'testruns' %}" class="btn btn-primary my-2 my-sm-0"> {% trans "Все пройденные тесты" %} </a>
       {% endif %}
       {% if request.user.is_authenticated %}
-        <p class="" style="display: inline-block; text-align: center; border-radius: 5px; border: 1px solid black; padding: 7px; width: 300px;">Добро пожаловать <span style="color: #a33;">{{ request.user.username }}</span></p>
-        <a  href = "{% url 'user_logout' %}" class="btn btn-danger my-2 my-sm-0">Выйти</a>
+        <p class="" style="display: inline-block; text-align: center; border-radius: 5px; border: 1px solid black; padding: 7px; width: 300px;"> {% trans "Добро пожаловать" %} <span style="color: #a33;">{{ request.user.username }}</span></p>
+        <a  href = "{% url 'user_logout' %}" class="btn btn-danger my-2 my-sm-0">{% trans "Выйти" %}</a>
       {% else %}
-        <a  href = "{% url 'user_login' %}" class="btn btn-primary my-2 my-sm-0">Вход</a>
-        <a  href = "{% url 'user_create' %}" class="btn btn-primary my-2 my-sm-0">Регистрация</a>
+        <a  href = "{% url 'user_login' %}" class="btn btn-primary my-2 my-sm-0">{% trans "Вход" %}</a>
+        <a  href = "{% url 'user_create' %}" class="btn btn-primary my-2 my-sm-0">{% trans "Регистрация" %}</a>
       {% endif %}
       <form class="form-inline search_form" action="{% url 'list_tests' %}" method="GET">
-        <input class="form-control mr-sm-2" type="search" name="search" placeholder="Поиск" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"> Поиск </button>
+        <input class="form-control mr-sm-2" type="search" name="q" placeholder="{% trans 'Поиск' %}" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"> {% trans "Поиск" %} </button>
+      </form>
+      <form class="flags" action="{% url 'set_language' %}" method="post">{% csrf_token %}
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        {% get_language_info_list for LANGUAGES as languages %}
+        {% for language in languages %}
+          <button type="submit" name="language" class="{{ language.code }} flag" {% if language.code == LANGUAGE_CODE %}style="border: 1px solid black; cursor: default;"disabled{% endif %} value="{{ language.code }}"><img src="/static/questions/images/{{ language.code }}-flag.png" alt="button_change language"></button>
+        {% endfor %}
       </form>
     </nav>
   </header>
@@ -49,7 +59,7 @@
   <footer>
       {% if request.user.is_authenticated %}
       <div class="button_bottom">
-        <a href = "{% url 'questions_show' %}" class="btn btn-primary my-2 my-sm-0" style="display: block; margin-bottom: 5px;"> Все вопросы </a>
+        <a href = "{% url 'questions_show' %}" class="btn btn-primary my-2 my-sm-0" style="display: block; margin-bottom: 5px;"> {% trans "Все вопросы" %} </a>
         {% block footer_btn %}
         {% endblock %}
       </div>

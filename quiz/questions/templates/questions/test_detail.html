@@ -1,28 +1,28 @@
 {% extends "questions/base.html" %}
 {% load custom_filters %}
+{% load i18n %}
 
 {% block content %}
-
 <div class="card w-75">
   <div class="card-body">
     <h3 class="card-title">{{ test.title }}</h3>
     <div class="text-center">
       <p class="description">{{ test.description }}</p>
     </div>
-      <h3 style="padding-left: 5px; margin-top: 30px;">Тест включает такие вопросы: </h3>
+      <h3 style="padding-left: 5px; margin-top: 30px;">{% trans "Тест включает такие вопросы:" %}</h3>
       <ul style="padding-left: 20px;">
       {% for question in questions %}
         <li>{{question}}</li>
       {% endfor %}
       </ul>
       <p class="text-muted" style="padding-left: 10px;">
-        ЗАМЕТКИ: &nbsp;
+        {% trans "ЗАМЕТКИ:" %} &nbsp;
         {% for note in notes %}
           {{ note.name }}{% if not forloop.last %}, {% endif %}
         {% endfor %}
       </p>
       <div class="text-center">
-        <a href="{% url 'test' test.id %}" class=" btn btn-primary ">Пройти тест</a>
+        <a href="{% url 'test' test.id %}" class=" btn btn-primary ">{% trans "Пройти тест" %}</a>
       </div>
   </div>
 </div>
@@ -32,8 +32,8 @@
 {% block footer_btn %}
   {% if request.user|has_group:"authors" or request.user|has_group:"moderators"%}
     {% if request.user|has_group:"authors" %}
-    <a href = "{% url 'test_add_notes' test.id %}" class="btn btn-primary my-2 my-sm-0" style="display: block; margin-bottom: 5px;"> Добавить Заметки </a>
+      <a href = "{% url 'test_add_notes' test.id %}" class="btn btn-primary my-2 my-sm-0" style="display: block; margin-bottom: 5px;"> {% trans "Добавить Заметки" %} </a>
     {% endif %}
-    <a href = "{% url 'test_update' test.id %}" class="btn btn-primary my-2 my-sm-0" style="display: block; margin-bottom: 5px;"> Изменить Тест </a>
+      <a href = "{% url 'test_update' test.id %}" class="btn btn-primary my-2 my-sm-0" style="display: block; margin-bottom: 5px;"> {% trans "Изменить Тест" %} </a>
   {% endif %}
 {% endblock %}

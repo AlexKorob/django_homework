@@ -1,11 +1,12 @@
 {% extends "questions/base.html" %}
+{% load i18n %}
 
 {% block content %}
   <div class="card">
     <div class="text-center">
-      <h2 class="text-success">Тест окончен!</h2>
-      <p>Спасибо за уделенное вами время</p>
-      <a href="{% url 'list_tests' %}" class="btn btn-success btn-lg">На главную</a>
+      <h2 class="text-success">{% trans "Тест окончен!" %}</h2>
+      <p>{% trans "Спасибо за уделенное вами время" %}</p>
+      <a href="{% url 'list_tests' %}" class="btn btn-success btn-lg">{% trans "На главную" %}</a>
     </div>
   <div>
 {% endblock %}

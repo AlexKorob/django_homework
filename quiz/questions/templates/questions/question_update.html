@@ -1,12 +1,12 @@
 {% extends "questions/base.html" %}
-
+{% load i18n %}
 
 {% block content %}
   <div class="card w-75">
     <div class="card-body question">
       <form action="" method="POST">
         {% csrf_token %}
-        <h4 class="card-title">Изменить вопрос</h4>
+        <h4 class="card-title">{% trans "Изменить вопрос" %}</h4>
           <div class="text-center">
             {% if errors %}
               <div class="alert-danger">
@@ -14,8 +14,8 @@
               </div>
             {% endif %}
             {{ form.question }}<br>
-            <input type="submit" name="update" class="btn_test btn btn-primary" value="Изменить">
-            <input type="submit" name="delete" class="btn btn-danger my-2 my-sm-0" value="Удалить">
+            <input type="submit" name="update" class="btn_test btn btn-primary" value="{% trans 'Изменить' %}">
+            <input type="submit" name="delete" class="btn btn-danger my-2 my-sm-0" value="{% trans 'Удалить' %}">
           </div>
       </form>
     </div>

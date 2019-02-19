@@ -62,3 +62,26 @@ header>nav>.search_form {
   bottom: 40px;
   left: 15px;
 }
+
+/* Flags */
+.flag {
+  margin-right: 10px;
+  cursor: pointer;
+  padding: 0;
+  border: 0;
+}
+
+.flags {
+  float: right;
+}
+
+.flag-not-selected:hover {
+  box-shadow: 0 0 15px rgba(45, 175, 223, .8);
+}
+
+.en {
+  '/static/questions/images/USA-flag.png'
+}
+.ru {
+  '/static/questions/images/russian-flag.png'
+}

@@ -1,11 +1,12 @@
 {% extends "questions/base.html" %}
 {% load custom_filters %}
+{% load i18n %}
 
 {% block content %}
   <div class="card w-75">
     <div class="card-body question">
         {% csrf_token %}
-        <h4 class="card-title">Детали теста</h4>
+        <h4 class="card-title">{% trans "Детали теста" %}</h4>
           <ul style="margin: 20px 0 10px 40px;">
             {% for test in testrun %}
             <li style="display: inline-block; font-size: 16px; margin-bottom: 10px;">
@@ -14,13 +15,13 @@
             <br>
             {% endfor %}
             <p class="text-muted">
-              ЗАМЕТКИ: &nbsp;
+              {% trans "ЗАМЕТКИ:" %} &nbsp;
               {% for note in notes %}
                 {{ note.name }}{% if not forloop.last %}, {% endif %}
               {% endfor %}
             </p>
           <div class="text-center">
-            <a  href = "{% url 'testruns' %}" class="btn btn-primary my-2 my-sm-0"> К пройденным тестам </a>
+            <a  href = "{% url 'testruns' %}" class="btn btn-primary my-2 my-sm-0"> {% trans "К пройденным тестам" %} </a>
           </div>
         </ul>
     </div>
@@ -29,6 +30,6 @@
 
 {% block footer_btn %}
   {% if request.user|has_group:"moderators" %}
-    <a href = "{% url 'testrun_add_notes' testrun_id %}" class="btn btn-primary my-2 my-sm-0" style="display: block; margin-bottom: 5px;"> Добавить Заметки </a>
+    <a href = "{% url 'testrun_add_notes' testrun_id %}" class="btn btn-primary my-2 my-sm-0" style="display: block; margin-bottom: 5px;"> {% trans "Добавить Заметки" %} </a>
   {% endif %}
 {% endblock %}

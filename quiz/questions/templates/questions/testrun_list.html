@@ -1,20 +1,19 @@
 {% extends "questions/base.html" %}
-
+{% load i18n %}
 
 {% block content %}
   <div class="card w-75">
     <div class="card-body question">
-        {% csrf_token %}
-        <h4 class="card-title">Пройденные тесты</h4>
-          <div class="text-center">
-          {% for testrun in testruns %}
-            <span>Тест <b style="font-size: 12px;">№{{ forloop.revcounter }}</b></span>
-            <a href = "{% url 'testrun_detail' id=testrun.id %}" style="color: #a33; display: inline-block; font-size: 16px; margin-bottom: 10px;">
-              {{ testrun }}
-            </a>
-            <br>
-          {% endfor %}
-          </div>
+      <h4 class="card-title">{% trans "Пройденные тесты" %}</h4>
+      <div class="text-center">
+      {% for testrun in testruns %}
+        <span>{% trans "Тест" %} <b style="font-size: 12px;">№{{ forloop.revcounter }}</b></span>
+        <a href = "{% url 'testrun_detail' id=testrun.id %}" style="color: #a33; display: inline-block; font-size: 16px; margin-bottom: 10px;">
+          {{ testrun }}
+        </a>
+        <br>
+      {% endfor %}
+      </div>
     </div>
   </div>
 {% endblock %}

@@ -2,6 +2,7 @@ from django import forms
 from .models import Question, Test, TestrunAnswer, Testrun
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
 
 
 class QuestionForm(forms.ModelForm):
@@ -15,7 +16,8 @@ class QuestionForm(forms.ModelForm):
     def clean_question(self):
         cleaned_data = self.cleaned_data
         if len(cleaned_data["question"]) <= 5:
-            raise forms.ValidationError("Вопрос не может состоять менее чем из 5-ти символов!")
+            error_message = _("Вопрос не может состоять менее чем из 5-ти символов!")
+            raise forms.ValidationError(error_message)
         return cleaned_data['question']
 
 
@@ -23,16 +25,24 @@ class TestForm(forms.ModelForm):
     class Meta:
         model = Test
         fields = ['title', 'description', 'status', 'questions']
+        labels = {
+            "title": _("Заголовок"),
+            "description": _("Описание"),
+            "status": _("Статус"),
+            'questions': _("Вопросы")
+        }
 
     def clean_title(self):
         cleaned_data = self.cleaned_data
         if len(cleaned_data["title"]) <= 2:
-            raise forms.ValidationError("Заголовок не может состоять менее чем из 3-х символов!")
+            error_message = _("Заголовок не может состоять менее чем из 3-х символов!")
+            raise forms.ValidationError(error_message)
         return cleaned_data['title']
 
     def clean_questions(self):
         if len(self.cleaned_data["questions"]) == 0:
-            raise forms.ValidationError("Тест должен минимум 1 вопрос")
+            error_message = _("Тест должен содержать минимум 1 вопрос")
+            raise forms.ValidationError(error_message)
         return self.cleaned_data["questions"]
 
 
@@ -44,7 +54,8 @@ class TestrunAnswerForm(forms.ModelForm):
     def clean(self):
         for data in self.cleaned_data.values():
             if len(data) <= 1:
-                raise forms.ValidationError("Поле должно быть заполнено")
+                error_message = _("Поле должно быть заполнено")
+                raise forms.ValidationError(error_message)
         return self.cleaned_data
 
 
@@ -56,7 +67,7 @@ class TestrunForm(forms.ModelForm):
 
 class UserCreateForm(UserCreationForm):
     UserCreationForm.error_messages = {
-        'password_mismatch': "Пароли не совпадают",
+        'password_mismatch': _("Пароли не совпадают"),
     }
 
     class Meta:
@@ -66,17 +77,21 @@ class UserCreateForm(UserCreationForm):
     def clean_username(self):
         username = self.cleaned_data["username"]
         if User.objects.filter(username=username):
-            raise forms.ValidationError("Такой Логин уже существует")
+            error_message = _("Такой Логин уже существует")
+            raise forms.ValidationError(error_message)
         elif len(username) <= 2:
-            raise forms.ValidationError("Логин не может состоять менее чем из 3-х символов!")
+            error_message = _("Логин не может состоять менее чем из 3-х символов!")
+            raise forms.ValidationError(error_message)
         return username
 
     def clean_first_name(self):
         if len(self.cleaned_data["first_name"]) <= 2:
-            raise forms.ValidationError("Имя не может состоять менее чем из 3-х символов!")
+            error_message = _("Имя не может состоять менее чем из 3-х символов!")
+            raise forms.ValidationError(error_message)
         return self.cleaned_data['first_name']
 
     def clean_last_name(self):
         if len(self.cleaned_data["last_name"]) <= 2:
-            raise forms.ValidationError("Фамилия не может состоять менее чем из 3-х символов!")
+            error_message = _("Фамилия не может состоять менее чем из 3-х символов!")
+            raise forms.ValidationError(error_message)
         return self.cleaned_data['last_name']
