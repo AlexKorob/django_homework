@@ -1,11 +1,11 @@
 {% extends "questions/base.html" %}
-
+{% load i18n %}
 
 {% block content %}
   <div class="card w-75">
     <div class="card-body question">
         {% csrf_token %}
-        <h4 class="card-title">Все вопросы</h4>
+        <h4 class="card-title">{% trans "Все вопросы" %}</h4>
           <div class="text-center">
           {% for question in questions %}
             <a href = "{% url 'question_update' id=question.id %}" style="color: green; display: inline-block; font-size: 16px; margin-bottom: 10px;">{{ question }}</a>

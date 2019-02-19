@@ -1,5 +1,6 @@
 {% extends "questions/base.html" %}
 {% load custom_filters %}
+{% load i18n %}
 
 {% block content %}
     {% for test in tests %}
@@ -8,10 +9,10 @@
           <h4 class="card-title">{{ test.title }}</h4>
           <div class="text-center">
             {% if test.blocked %}
-              <a href="" class="btn_test btn btn-dark" style="pointer-events: none; cursor: default; text-decoration: none; color: black; font-size: 18px;">НЕ АКТИВЕН</a>
+              <a href="" class="btn_test btn btn-dark" style="pointer-events: none; cursor: default; text-decoration: none; color: black; font-size: 18px;">{% trans "НЕ АКТИВЕН" %}</a>
             {% else %}
-              <a href="{% url 'test_detail' test.id %}" class="btn_test btn btn-primary">К тесту</a>
-              <p class="text-muted" style="padding-top: 10px; margin-bottom: -10px;">Станет недоступен через: {{ test.deactivate_on|stringformat:".18s" }}</p>
+              <a href="{% url 'test_detail' test.id %}" class="btn_test btn btn-primary">{% trans "К тесту" %}</a>
+              <p class="text-muted" style="padding-top: 10px; margin-bottom: -10px;">{% trans "Станет недоступен через" %}: {{ test.deactivate_on|stringformat:".18s" }}</p>
             {% endif %}
           </div>
         </div>
@@ -20,7 +21,7 @@
   {% if request.user.is_authenticated and request.user|has_group:"authors" and tests.count == 0 %}
     <div class="card w-75" style="margin-top: 200px;">
       <div class="text-center">
-        <h2 class="text-muted">Вы еще не создали ни одного теста</h2>
+        <h2 class="text-muted">{% trans "Вы еще не создали ни одного теста" %}</h2>
       </div>
     </div>
   {% endif %}
@@ -28,7 +29,7 @@
   {% if request.user.is_authenticated and request.user|has_group:"users" and tests.count == 0 %}
     <div class="card w-75" style="margin-top: 200px;">
       <div class="text-center">
-        <h2 class="text-muted">К сожалению ни одного теста не найдено :( </h2>
+        <h2 class="text-muted">{% trans "К сожалению ни одного теста не найдено" %} :( </h2>
       </div>
     </div>
   {% endif %}

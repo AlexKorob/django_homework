@@ -1,4 +1,5 @@
 {% extends "questions/base.html" %}
+{% load i18n %}
 
 {% block content %}
   <div class="card w-75">
@@ -8,10 +9,10 @@
         {% if errors %}
           <div class="alert alert-danger">{{ errors }}</div>
         {% endif %}
-        <h4 class="card-title">Создать вопрос</h4>
+        <h4 class="card-title">{% trans "Создать вопрос" %}</h4>
           <div class="text-center">
           {{ form.question }}<br>
-            <input type="submit" name="final" class="btn_test btn btn-primary" value="Создать">
+            <input type="submit" name="final" class="btn_test btn btn-primary" value="{% trans 'Создать' %}">
           </div>
       </form>
     </div>

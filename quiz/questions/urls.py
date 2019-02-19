@@ -1,8 +1,10 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 
 urlpatterns = [
+    path('i18n/', include('django.conf.urls.i18n')),
+
     path('', views.index, name="list_tests"),
     path('<int:test_id>/', views.test_detail, name="test_detail"),
     path('test/<int:test_id>/', views.testrun, name="test"),
@@ -22,6 +24,6 @@ urlpatterns = [
 
     path('register/', views.UserCreate.as_view(), name="user_create"),
     path('login/', views.UserAuthentication.as_view(), name="user_login"),
-    path('logout/', views.UserLogout.as_view(), name="user_logout")
+    path('logout/', views.UserLogout.as_view(), name="user_logout"),
 
 ]

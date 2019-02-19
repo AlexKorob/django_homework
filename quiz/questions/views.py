@@ -19,10 +19,11 @@ from django.contrib.auth.decorators import login_required, permission_required, 
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from .tasks import task_block_test
+from django.utils.translation import gettext_lazy as _
 
 
 def index(request):
-    search_query = request.GET.get("search", '')
+    search_query = request.GET.get("q", '')
     if search_query:
         if request.user.groups.filter(name="authors").exists():
             # Q(title__icontains=search_query) - "i" указывает на регистронезависимый поиск

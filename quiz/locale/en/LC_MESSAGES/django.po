@@ -1,0 +1,282 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-02-19 20:30+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: questions/forms.py:19
+msgid "Вопрос не может состоять менее чем из 5-ти символов!"
+msgstr "Question can't contain less than five symbols!"
+
+#: questions/forms.py:29
+msgid "Заголовок"
+msgstr "Title"
+
+#: questions/forms.py:30
+msgid "Описание"
+msgstr "Description"
+
+#: questions/forms.py:31
+msgid "Статус"
+msgstr "Status"
+
+#: questions/forms.py:32
+#| msgid "Все вопросы"
+msgid "Вопросы"
+msgstr "All Questions"
+
+#: questions/forms.py:38
+msgid "Заголовок не может состоять менее чем из 3-х символов!"
+msgstr "Title can't contain less than three symbols!"
+
+#: questions/forms.py:44
+msgid "Тест должен содержать минимум 1 вопрос"
+msgstr "Test must contain minimum one question"
+
+#: questions/forms.py:57
+msgid "Поле должно быть заполнено"
+msgstr "Field must fill"
+
+#: questions/forms.py:70
+msgid "Пароли не совпадают"
+msgstr "Passwords don't match"
+
+#: questions/forms.py:80
+msgid "Такой Логин уже существует"
+msgstr "This Login has exist"
+
+#: questions/forms.py:83
+msgid "Логин не может состоять менее чем из 3-х символов!"
+msgstr "Login can't consist less than three symbols!"
+
+#: questions/forms.py:89
+msgid "Имя не может состоять менее чем из 3-х символов!"
+msgstr "Name can't consist less than three symbols!"
+
+#: questions/forms.py:95
+msgid "Фамилия не может состоять менее чем из 3-х символов!"
+msgstr "Last name can't consist less than three symbols!"
+
+#: questions/templates/questions/add_notes.html:13
+msgid "Добавить Заметки:"
+msgstr "Add Notes:"
+
+#: questions/templates/questions/add_notes.html:20
+msgid "Добавленные заметки:"
+msgstr "Added Notes:"
+
+#: questions/templates/questions/add_notes.html:29
+msgid "Добавить"
+msgstr "Add"
+
+#: questions/templates/questions/base.html:12
+msgid "Тесты"
+msgstr "Tests"
+
+#: questions/templates/questions/base.html:23
+#: questions/templates/questions/success.html:9
+msgid "На главную"
+msgstr "Home"
+
+#: questions/templates/questions/base.html:25
+#: questions/templates/questions/testrun_list.html:7
+msgid "Пройденные тесты"
+msgstr "Passed tests"
+
+#: questions/templates/questions/base.html:27
+msgid "+ Создать Вопрос"
+msgstr "+ Create Question"
+
+#: questions/templates/questions/base.html:28
+msgid "+ Создать Тест"
+msgstr "+ Create Test"
+
+#: questions/templates/questions/base.html:30
+msgid "Все пройденные тесты"
+msgstr "All passed tests"
+
+#: questions/templates/questions/base.html:33
+msgid "Добро пожаловать"
+msgstr "Welcome"
+
+#: questions/templates/questions/base.html:34
+msgid "Выйти"
+msgstr "Sign Out"
+
+#: questions/templates/questions/base.html:36
+#: questions/templates/questions/login/login.html:9
+#: questions/templates/questions/login/login.html:20
+#: questions/templates/questions/login/login.html:31
+msgid "Вход"
+msgstr "Sign In"
+
+#: questions/templates/questions/base.html:37
+#: questions/templates/questions/login/register.html:10
+#: questions/templates/questions/login/register.html:21
+#: questions/templates/questions/login/register.html:44
+msgid "Регистрация"
+msgstr "Registration"
+
+#: questions/templates/questions/base.html:40
+#: questions/templates/questions/base.html:41
+msgid "Поиск"
+msgstr "Search"
+
+#: questions/templates/questions/base.html:62
+#: questions/templates/questions/question_show.html:8
+msgid "Все вопросы"
+msgstr "All Questions"
+
+#: questions/templates/questions/index.html:12
+msgid "НЕ АКТИВЕН"
+msgstr "NOT ACTIVE"
+
+#: questions/templates/questions/index.html:14
+msgid "К тесту"
+msgstr "To test"
+
+#: questions/templates/questions/index.html:15
+msgid "Станет недоступен через"
+msgstr "Will not active through"
+
+#: questions/templates/questions/index.html:24
+msgid "Вы еще не создали ни одного теста"
+msgstr "You aren't create test, yet"
+
+#: questions/templates/questions/index.html:32
+msgid "К сожалению ни одного теста не найдено"
+msgstr "Unfortunately test not found"
+
+#: questions/templates/questions/login/login.html:26
+#: questions/templates/questions/login/register.html:25
+msgid "Логин:"
+msgstr "Login:"
+
+#: questions/templates/questions/login/login.html:28
+#: questions/templates/questions/login/register.html:34
+msgid "Введите пароль:"
+msgstr "Password:"
+
+#: questions/templates/questions/login/register.html:28
+msgid "Ваше имя:"
+msgstr "Your name:"
+
+#: questions/templates/questions/login/register.html:31
+msgid "Введите Фамилию:"
+msgstr "Your last name"
+
+#: questions/templates/questions/login/register.html:35
+msgid "Повторите пароль:"
+msgstr "Confirm password"
+
+#: questions/templates/questions/login/register.html:37
+msgid "Вы регистрируетесь как:"
+msgstr "You register how:"
+
+#: questions/templates/questions/login/register.html:39
+msgid "Пользователь"
+msgstr "User"
+
+#: questions/templates/questions/login/register.html:40
+msgid "Автор"
+msgstr "Author"
+
+#: questions/templates/questions/question_create.html:12
+msgid "Создать вопрос"
+msgstr "Create question"
+
+#: questions/templates/questions/question_create.html:15
+#: questions/templates/questions/test_create.html:15
+msgid "Создать"
+msgstr "Create"
+
+#: questions/templates/questions/question_update.html:9
+msgid "Изменить вопрос"
+msgstr "Change question"
+
+#: questions/templates/questions/question_update.html:17
+#: questions/templates/questions/test_update.html:15
+msgid "Изменить"
+msgstr "Change"
+
+#: questions/templates/questions/question_update.html:18
+#: questions/templates/questions/test_update.html:16
+msgid "Удалить"
+msgstr "Delete"
+
+#: questions/templates/questions/success.html:7
+msgid "Тест окончен!"
+msgstr "Test was finish!"
+
+#: questions/templates/questions/success.html:8
+msgid "Спасибо за уделенное вами время"
+msgstr "Thank's for your passed time"
+
+#: questions/templates/questions/test.html:14
+#: questions/templates/questions/testrun_list.html:10
+msgid "Тест"
+msgstr "Test"
+
+#: questions/templates/questions/test.html:28
+msgid "Завершить"
+msgstr "Finish"
+
+#: questions/templates/questions/test_create.html:12
+msgid "Создать тест"
+msgstr "Create test"
+
+#: questions/templates/questions/test_detail.html:12
+msgid "Тест включает такие вопросы:"
+msgstr "Test contain the next questions:"
+
+#: questions/templates/questions/test_detail.html:19
+#: questions/templates/questions/testrun_detail.html:18
+msgid "ЗАМЕТКИ:"
+msgstr "NOTES:"
+
+#: questions/templates/questions/test_detail.html:25
+msgid "Пройти тест"
+msgstr "Pass test"
+
+#: questions/templates/questions/test_detail.html:35
+#: questions/templates/questions/testrun_detail.html:33
+msgid "Добавить Заметки"
+msgstr "Add Notes"
+
+#: questions/templates/questions/test_detail.html:37
+msgid "Изменить Тест"
+msgstr "Change Test"
+
+#: questions/templates/questions/test_update.html:12
+msgid "Изменить тест"
+msgstr "Change test"
+
+#: questions/templates/questions/testrun_detail.html:9
+msgid "Детали теста"
+msgstr "Test details"
+
+#: questions/templates/questions/testrun_detail.html:24
+msgid "К пройденным тестам"
+msgstr "To passed tests"
+
+#: quiz/settings.py:125
+msgid "Russian"
+msgstr ""
+
+#: quiz/settings.py:126
+msgid "English"
+msgstr ""
