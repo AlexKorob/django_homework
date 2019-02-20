@@ -7,5 +7,7 @@
   pip3 install -r requirements.txt
   git checkout django_quiz_localization
   cd quiz
+  ./manage.py migrate
+  ./manage.py compilemessages
   ./manage.py runserver
 ```
