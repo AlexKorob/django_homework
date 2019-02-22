@@ -48,7 +48,7 @@ class Question(models.Model):
 
 
 class Testrun(models.Model):
-    name = models.CharField(max_length=40, blank=True)
+    name = models.ForeignKey(User, on_delete=models.CASCADE, related_name="testrun", null=True)
     test = models.ForeignKey(Test, related_name='testruns', on_delete=models.CASCADE)
     answer = models.ManyToManyField(Question, related_name="testruns", through="TestrunAnswer")
     note = GenericRelation(NoteItem)

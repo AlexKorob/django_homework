@@ -1,5 +1,5 @@
 from django.urls import path, include
-from . import views
+from . import views, api_views
 
 
 urlpatterns = [
@@ -25,5 +25,13 @@ urlpatterns = [
     path('register/', views.UserCreate.as_view(), name="user_create"),
     path('login/', views.UserAuthentication.as_view(), name="user_login"),
     path('logout/', views.UserLogout.as_view(), name="user_logout"),
+
+    path('api-tests/', api_views.TestList.as_view(), name="api_list_tests"),
+    path('api-test/<int:pk>/', api_views.TestDetail.as_view(), name="api_test_detail"),
+    path('api-questions/', api_views.QuestionList.as_view(), name="api_list_questions"),
+    path('api-question/<int:pk>/', api_views.QuestionDetail.as_view(), name="api_question_detail"),
+    path('api-testruns/', api_views.TestrunList.as_view(), name="api_list_testruns"),
+    path('api-testrun/<int:pk>/', api_views.TestrunDetail.as_view(), name="api_testrun_detail"),
+    path('api-testrunanswers/', api_views.TestrunAnswerList.as_view(), name="api_list_testrunanswers"),
 
 ]

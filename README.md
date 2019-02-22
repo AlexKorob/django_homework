@@ -1,4 +1,4 @@
-## Quiz site (localization)
+## Quiz site (API)
 
 ```bash
   git clone https://github.com/AlexKorob/django_homework.git
