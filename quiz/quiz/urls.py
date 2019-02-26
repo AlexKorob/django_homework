@@ -17,11 +17,18 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
-from django.conf.urls.i18n import i18n_patterns
+from rest_framework_swagger.views import get_swagger_view
+from rest_framework.authtoken.views import obtain_auth_token
+from questions import api_views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('tests/', include("questions.urls")),
+
+    path('api-auth/', include('rest_framework.urls')),
+    path('api-token-auth/', obtain_auth_token),
+    path('swagger/', get_swagger_view(title='API')),
 ]
 
 if settings.DEBUG:

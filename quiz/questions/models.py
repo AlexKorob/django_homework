@@ -2,7 +2,17 @@ from django.db import models
 from django.shortcuts import reverse
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.auth.models import User
-from notes.models import NoteItem
+from notes.models import NoteItem, Note
+from django.contrib.contenttypes.models import ContentType
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
+
+
+@receiver(post_save, sender=User)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
 
 
 class Test(models.Model):
@@ -18,7 +28,7 @@ class Test(models.Model):
 
     title = models.CharField(max_length=40)
     description = models.TextField()
-    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="test", null=True)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="test")
     status = models.SmallIntegerField(choices=STATUS, default=STATUS_DRAFT)
     questions = models.ManyToManyField("Question", related_name="tests")
     created_on = models.DateTimeField(auto_now_add=True)
@@ -28,6 +38,11 @@ class Test(models.Model):
 
     class Meta:
         ordering = ['-created_on']
+
+    def notes(self):
+        notes = Note.objects.filter(note_item__content_type=ContentType.objects.get_for_model(self.__class__),
+                                    note_item__object_id=self.id)
+        return notes
 
     def get_absolute_url(self):
         return reverse("list_tests")
@@ -59,12 +74,17 @@ class Testrun(models.Model):
     def __str__(self):
         return str(self.name) + " | " + str(self.test)
 
+    def notes(self):
+        notes = Note.objects.filter(note_item__content_type=ContentType.objects.get_for_model(self.__class__),
+                                    note_item__object_id=self.id)
+        return notes
+
     def get_absolute_url(self):
         return reverse("tests_show")
 
 
 class TestrunAnswer(models.Model):
-    testrun = models.ForeignKey(Testrun, on_delete=models.CASCADE)
+    testrun = models.ForeignKey(Testrun, on_delete=models.CASCADE, related_name='testrun_answer')
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="testrun_answer")
     answer = models.CharField(max_length=120)
 

@@ -44,6 +44,8 @@ INSTALLED_APPS = [
 
     'debug_toolbar',
     'rest_framework',
+    'rest_framework_swagger',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +135,9 @@ LANGUAGES = [('ru', _('Russian')),
 
 STATIC_URL = '/static/'
 LOGIN_URL = '/tests/login/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
