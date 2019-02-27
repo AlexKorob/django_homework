@@ -18,7 +18,7 @@ class Test(models.Model):
 
     title = models.CharField(max_length=40)
     description = models.TextField()
-    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="test", null=True)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="test")
     status = models.SmallIntegerField(choices=STATUS, default=STATUS_DRAFT)
     questions = models.ManyToManyField("Question", related_name="tests")
     created_on = models.DateTimeField(auto_now_add=True)
