@@ -26,16 +26,8 @@ Permissions moderators:
   * delete any test
   * add notes to testrun
 
-superuser:
-  * login: alex; password: 123
 
-user:
-  * login: alex1; password: hello1209
-  * login: alex2; password: hello1209
-
-authors:
-  * login: vasya; password: hello1209
-  * login: Petro; password: hello1209
-
-moderator:
-  * login: Oleg; password: hello1209
+####For correct permission, registration and authorization, create three groups with necessary permissions above:
+ * authors
+ * users
+ * moderators
