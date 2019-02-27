@@ -1,6 +1,7 @@
 from django.db import models
 from django.shortcuts import reverse
 from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.auth.models import User
 from notes.models import NoteItem
 
 
@@ -17,6 +18,7 @@ class Test(models.Model):
 
     title = models.CharField(max_length=40)
     description = models.TextField()
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="test")
     status = models.SmallIntegerField(choices=STATUS, default=STATUS_DRAFT)
     questions = models.ManyToManyField("Question", related_name="tests")
     created_on = models.DateTimeField(auto_now_add=True)

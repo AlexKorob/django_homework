@@ -1,4 +1,5 @@
 {% extends "questions/base.html" %}
+{% load custom_filters %}
 
 {% block content %}
 
@@ -29,6 +30,10 @@
 {% endblock %}
 
 {% block footer_btn %}
-<a href = "{% url 'test_add_notes' test.id %}" class="btn btn-primary my-2 my-sm-0" style="display: block; margin-bottom: 5px;"> Добавить Заметки </a>
-<a href = "{% url 'test_update' test.id %}" class="btn btn-primary my-2 my-sm-0" style="display: block; margin-bottom: 5px;"> Изменить Тест </a>
+  {% if request.user|has_group:"authors" or request.user|has_group:"moderators"%}
+    {% if request.user|has_group:"authors" %}
+    <a href = "{% url 'test_add_notes' test.id %}" class="btn btn-primary my-2 my-sm-0" style="display: block; margin-bottom: 5px;"> Добавить Заметки </a>
+    {% endif %}
+    <a href = "{% url 'test_update' test.id %}" class="btn btn-primary my-2 my-sm-0" style="display: block; margin-bottom: 5px;"> Изменить Тест </a>
+  {% endif %}
 {% endblock %}

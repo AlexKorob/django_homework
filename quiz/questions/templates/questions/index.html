@@ -1,14 +1,30 @@
 {% extends "questions/base.html" %}
+{% load custom_filters %}
 
 {% block content %}
-  {% for test in tests %}
-    <div class="card w-75">
-      <div class="card-body">
-        <h4 class="card-title">{{ test.title }}</h4>
-        <div class="text-center">
-          <a href="{% url 'test_detail' test.id %}" class="btn_test btn btn-primary">К тесту</a>
+    {% for test in tests %}
+      <div class="card w-75">
+        <div class="card-body">
+          <h4 class="card-title">{{ test.title }}</h4>
+          <div class="text-center">
+            <a href="{% url 'test_detail' test.id %}" class="btn_test btn btn-primary">К тесту</a>
+          </div>
         </div>
       </div>
+    {% endfor %}
+  {% if request.user.is_authenticated and request.user|has_group:"authors" and tests.count == 0 %}
+    <div class="card w-75" style="margin-top: 200px;">
+      <div class="text-center">
+        <h2 class="text-muted">Вы еще не создали ни одного теста</h2>
+      </div>
     </div>
-  {% endfor %}
+  {% endif %}
+
+  {% if request.user.is_authenticated and request.user|has_group:"users" and tests.count == 0 %}
+    <div class="card w-75" style="margin-top: 200px;">
+      <div class="text-center">
+        <h2 class="text-muted">К сожалению ни одного теста не найдено :( </h2>
+      </div>
+    </div>
+  {% endif %}
 {% endblock %}

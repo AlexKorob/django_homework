@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <title>Вход</title>
+  <style  type="text/css">
+    label{
+      width: 200px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <article class="main" style="width: 400px; margin: 0 auto;">
+    <h3 style="text-align: center; margin-bottom: 20px;">Вход</h3>
+    {% if error %}
+      <div class="alert-danger">{{ error }}</div>
+    {% endif %}
+    <form action="" method="POST">
+      {% csrf_token %}
+      <label for="id_username">Логин: </label>{{ form.username }}<br>
+
+      <label for="id_password">Введите пароль: </label>{{ form.password }}<br>
+
+      <div class="text-center" style="margin-top: 20px;">
+        <button type="submit" class="btn btn-primary">Вход</button>
+      </div>
+    </form>
+  </article>
+</body>
+</html>
