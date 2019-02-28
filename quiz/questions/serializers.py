@@ -34,11 +34,10 @@ class TestSerializer(serializers.ModelSerializer):
 
 class TestSerializerPOST(serializers.ModelSerializer):
     creator = UserSerializer(read_only=True)
-    # notes = NoteItemSerializer(many=True)
 
     class Meta:
         model = Test
-        fields = ('id', 'title', 'description', 'creator', 'questions')
+        fields = ('id', 'title', 'description', 'creator', 'questions', 'notes')
 
 
 class TestrunAnswerSerializer(serializers.ModelSerializer):

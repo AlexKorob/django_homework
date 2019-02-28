@@ -11,3 +11,6 @@
   ./manage.py compilemessages
   ./manage.py runserver
 ```
+
+Before send not safe-method you need add header to request:
+  * Authorization: Token <user_token_authentication>

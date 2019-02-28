@@ -9,7 +9,7 @@ from rest_framework.response import Response
 
 class TestViewSet(viewsets.ModelViewSet):
     queryset = Test.objects.all()
-    serializer_class = TestSerializer
+    serializer_class = TestSerializerPOST
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     authentication_classes = (TokenAuthentication, SessionAuthentication)
 
@@ -18,10 +18,6 @@ class TestViewSet(viewsets.ModelViewSet):
 
     def list(self, request, format=None):
         serializer = TestSerializer(self.queryset, many=True)
-        return Response(serializer.data)
-
-    def create(self, request, format=None):
-        serializer = TestSerializerPOST(self.queryset, many=True)
         return Response(serializer.data)
 
 
