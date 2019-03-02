@@ -9,12 +9,6 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
 
-@receiver(post_save, sender=User)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    if created:
-        Token.objects.create(user=instance)
-
-
 class Test(models.Model):
     STATUS_DRAFT = 10
     PUBLISHED = 20
@@ -54,6 +48,7 @@ class Test(models.Model):
 class Question(models.Model):
     question = models.CharField(max_length=200)
     true_answer = models.TextField(blank=True)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.question
@@ -63,7 +58,7 @@ class Question(models.Model):
 
 
 class Testrun(models.Model):
-    name = models.ForeignKey(User, on_delete=models.CASCADE, related_name="testrun", null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="testrun", null=True)
     test = models.ForeignKey(Test, related_name='testruns', on_delete=models.CASCADE)
     answer = models.ManyToManyField(Question, related_name="testruns", through="TestrunAnswer")
     note = GenericRelation(NoteItem)
@@ -72,7 +67,7 @@ class Testrun(models.Model):
         ordering = ['id']
 
     def __str__(self):
-        return str(self.name) + " | " + str(self.test)
+        return str(self.user) + " | " + str(self.test)
 
     def notes(self):
         notes = Note.objects.filter(note_item__content_type=ContentType.objects.get_for_model(self.__class__),
@@ -90,3 +85,9 @@ class TestrunAnswer(models.Model):
 
     def __str__(self):
         return str(self.testrun) + " | " + str(self.question) + " | " + str(self.answer)
+
+
+@receiver(post_save, sender=User)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)

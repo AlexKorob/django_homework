@@ -11,9 +11,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
+    creator = UserSerializer(read_only=True)
+
     class Meta:
         model = Question
-        fields = ('id', 'question')
+        fields = ('id', 'question', 'creator')
 
 
 class NoteSerializer(serializers.ModelSerializer):
@@ -32,7 +34,7 @@ class TestSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'description', 'creator', 'questions', 'notes')
 
 
-class TestSerializerPOST(serializers.ModelSerializer):
+class TestCreateSerializer(serializers.ModelSerializer):
     creator = UserSerializer(read_only=True)
 
     class Meta:
@@ -49,18 +51,18 @@ class TestrunAnswerSerializer(serializers.ModelSerializer):
 
 
 class TestrunSerializer(serializers.ModelSerializer):
-    name = UserSerializer(read_only=True)
+    user = UserSerializer(read_only=True)
     test = TestSerializer(read_only=True)
     answer = TestrunAnswerSerializer(many=True, source="testrun_answer")
     notes = NoteSerializer(many=True)
 
     class Meta:
         model = Testrun
-        fields = ('id', 'name', 'test', 'answer', 'notes')
+        fields = ('id', 'user', 'test', 'answer', 'notes')
 
 
 class NoteTargetField(serializers.ModelSerializer):
-    serializer_map = {"Test": TestSerializer, "Testrun": TestrunSerializer}
+    serializer_map = {Test: TestSerializer, Testrun: TestrunSerializer}
 
     def to_representation(self, obj):
         serializer = self.serializer_map[obj.__class__]
