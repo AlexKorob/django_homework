@@ -20,6 +20,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.core.exceptions import PermissionDenied
 from .tasks import task_block_test
 from django.utils.translation import gettext_lazy as _
+from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import AnonymousUser
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 
 def index(request):
@@ -43,7 +47,10 @@ def index(request):
         when_deleted = test.created_on + timedelta(days=3)
         test.deactivate_on = when_deleted - now_time
 
-    return render(request, "questions/index.html", context={"tests": tests})
+    token = ""
+    if request.user != AnonymousUser():
+        token = Token.objects.get(user=request.user)
+    return render(request, "questions/index.html", context={"tests": tests, "token": token})
 
 
 @login_required
@@ -145,8 +152,8 @@ def testrun_list(request):
     if request.user.groups.filter(name="moderators"):
         testruns = Testrun.objects.all().order_by("-id")
     else:
-        name = request.user
-        testruns = Testrun.objects.filter(name=name).order_by("-id")
+        user = request.user
+        testruns = Testrun.objects.filter(user=user).order_by("-id")
     return render(request, "questions/testrun_list.html", context={"testruns": testruns})
 
 
@@ -199,6 +206,10 @@ class TestCreate(LoginRequiredMixin, PermissionRequiredMixin, ObjectCreateMixin,
             test.questions.set([quest for quest in bound_form.cleaned_data["questions"]])
             # After three days test will disabled
             task_block_test.apply_async((test.id, ), countdown=3*24*3600)
+
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)("notifications", {"type": "receive.msg",
+                                                                      "message": "reload"})
             return redirect(test)
         else:
             return render(request, self.template, {'form': bound_form, "errors": bound_form.errors})

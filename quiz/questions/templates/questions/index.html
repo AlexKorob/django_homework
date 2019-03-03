@@ -3,6 +3,22 @@
 {% load i18n %}
 
 {% block content %}
+  {% if token %}
+  <script type="text/javascript">
+    $(function() {
+      let url = "ws://" + document.location.host + "/notification/?token={{ token }}"
+      let web_socket = new WebSocket(url);
+
+      web_socket.onmessage = function(message) {
+        var data = message.data
+        if (data == "reload"){
+          window.location.reload();
+        }
+        console.log(message);
+      }
+    });
+  </script>
+  {% endif %}
     {% for test in tests %}
       <div class="card w-75">
         <div class="card-body">
