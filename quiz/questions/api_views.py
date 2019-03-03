@@ -9,6 +9,8 @@ from rest_framework.authentication import TokenAuthentication, SessionAuthentica
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.contrib.auth.models import User
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
@@ -39,20 +41,18 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 
 class TestViewSet(viewsets.ModelViewSet):
     queryset = Test.objects.all()
-    serializer_class = TestCreateSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsCreatorOrReadOnly)
 
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)("notifications", {"type": "receive.msg",
+                                                                  "message": "reload"})
 
-    def list(self, request, format=None):
-        serializer = TestSerializer(self.queryset, many=True)
-        return Response(serializer.data)
-
-    @action(detail=False, methods=("get",))
-    def all(self, request, *args, **kwargs):
-        serializer = TestSerializer(self.queryset, many=True)
-        return Response(serializer.data)
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return TestSerializer
+        return TestCreateSerializer
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
