@@ -7,15 +7,17 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 
 class Test(models.Model):
-    STATUS_DRAFT = 10
+    DRAFT = 10
     PUBLISHED = 20
     REJECTED = 30
 
     STATUS = [
-       (STATUS_DRAFT, "draft"),
+       (DRAFT, "draft"),
        (PUBLISHED, "published"),
        (REJECTED, "rejected")
     ]
@@ -23,7 +25,7 @@ class Test(models.Model):
     title = models.CharField(max_length=40)
     description = models.TextField()
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="test")
-    status = models.SmallIntegerField(choices=STATUS, default=STATUS_DRAFT)
+    status = models.SmallIntegerField(choices=STATUS, default=DRAFT)
     questions = models.ManyToManyField("Question", related_name="tests")
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateField(auto_now=True)
@@ -91,3 +93,11 @@ class TestrunAnswer(models.Model):
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
+
+
+@receiver(post_save, sender=Test)
+def create_test(sender, instance=None, created=False, **kwargs):
+    if created:
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)("notifications", {"type": "send.msg",
+                                                                  "message": "reload"})

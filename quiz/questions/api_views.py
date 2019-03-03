@@ -39,20 +39,15 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 
 class TestViewSet(viewsets.ModelViewSet):
     queryset = Test.objects.all()
-    serializer_class = TestCreateSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsCreatorOrReadOnly)
 
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
 
-    def list(self, request, format=None):
-        serializer = TestSerializer(self.queryset, many=True)
-        return Response(serializer.data)
-
-    @action(detail=False, methods=("get",))
-    def all(self, request, *args, **kwargs):
-        serializer = TestSerializer(self.queryset, many=True)
-        return Response(serializer.data)
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return TestSerializer
+        return TestCreateSerializer
 
 
 class QuestionViewSet(viewsets.ModelViewSet):

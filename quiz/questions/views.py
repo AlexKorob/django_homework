@@ -20,6 +20,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.core.exceptions import PermissionDenied
 from .tasks import task_block_test
 from django.utils.translation import gettext_lazy as _
+from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import AnonymousUser
 
 
 def index(request):
@@ -43,7 +45,10 @@ def index(request):
         when_deleted = test.created_on + timedelta(days=3)
         test.deactivate_on = when_deleted - now_time
 
-    return render(request, "questions/index.html", context={"tests": tests})
+    token = ""
+    if request.user != AnonymousUser():
+        token = Token.objects.get_or_create(user=request.user)[0]
+    return render(request, "questions/index.html", context={"tests": tests, "token": token})
 
 
 @login_required
@@ -145,8 +150,8 @@ def testrun_list(request):
     if request.user.groups.filter(name="moderators"):
         testruns = Testrun.objects.all().order_by("-id")
     else:
-        name = request.user
-        testruns = Testrun.objects.filter(name=name).order_by("-id")
+        user = request.user
+        testruns = Testrun.objects.filter(user=user).order_by("-id")
     return render(request, "questions/testrun_list.html", context={"testruns": testruns})
 
 
