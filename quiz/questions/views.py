@@ -100,7 +100,7 @@ def testrun(request, test_id):
 
     if request.method == "POST":
         formset = []
-        name = request.user.username
+        name = request.user
         testrun = Testrun.objects.create(test_id=test_id, name=name)
 
         for i in range(num_quest):
@@ -145,7 +145,7 @@ def testrun_list(request):
     if request.user.groups.filter(name="moderators"):
         testruns = Testrun.objects.all().order_by("-id")
     else:
-        name = request.user.username
+        name = request.user
         testruns = Testrun.objects.filter(name=name).order_by("-id")
     return render(request, "questions/testrun_list.html", context={"testruns": testruns})
 

@@ -62,7 +62,7 @@ class TestrunAnswerForm(forms.ModelForm):
 class TestrunForm(forms.ModelForm):
     class Meta:
         model = Testrun
-        fields = ["name", "test", "answer"]
+        fields = ["user", "test", "answer"]
 
 
 class UserCreateForm(UserCreationForm):

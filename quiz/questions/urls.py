@@ -1,6 +1,12 @@
 from django.urls import path, include
-from . import views
+from . import views, api_views
+from rest_framework.routers import DefaultRouter
 
+router = DefaultRouter()
+router.register(r'tests', api_views.TestViewSet)
+router.register(r'questions', api_views.QuestionViewSet)
+router.register(r'testruns', api_views.TestrunViewSet)
+router.register(r'users', api_views.UserViewSet)
 
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
@@ -25,5 +31,7 @@ urlpatterns = [
     path('register/', views.UserCreate.as_view(), name="user_create"),
     path('login/', views.UserAuthentication.as_view(), name="user_login"),
     path('logout/', views.UserLogout.as_view(), name="user_logout"),
+
+    path('api/', include(router.urls)),
 
 ]
