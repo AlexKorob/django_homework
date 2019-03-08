@@ -5,10 +5,9 @@ from django.conf import settings
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'quiz.settings')
 
-
 app = Celery('quiz',
-             broker="redis://localhost",
-             backend="redis://localhost")
+             broker="amqp://redis:6379/",
+             backend="amqp://redis:6379/")
 
 app.autodiscover_tasks()
 

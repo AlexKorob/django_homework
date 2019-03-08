@@ -17,11 +17,13 @@ from django.utils.translation import gettext_lazy as _
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INTERNAL_IPS = ['127.0.0.1', ]
 
+env = os.environ
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'gq-j93$a3u#!1pchw29k7*_8&b^9+0itrz%w=v^5sa79@a^3!-'
+SECRET_KEY = env["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -88,8 +90,12 @@ WSGI_APPLICATION = 'quiz.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env["DB_NAME"],
+        'USER': env["DB_USER"],
+        'PASSWORD': env["DB_PASSWORD"],
+        'HOST': 'db',
+        'PORT': 5432
     }
 }
 
@@ -154,7 +160,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": ["redis://localhost:6379/2"],
+            "hosts": ["redis"],
         },
     },
 }
