@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    env_file:
+      - ./.env
+    volumes:
+      - pgdb:/var/lib/postgresql/data
+
+  redis:
+    image: redis:latest
+    restart: always
+    hostname: redis
+
+  web:
+    build: .
+    env_file:
+      - ./.env
+    environment:
+       PYTHONIOENCODING: utf-8
+    command: ./start_proj.sh
+    volumes:
+      - .:/quiz
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+
+  celery:
+    build: .
+    env_file:
+      - ./.env
+    environment:
+      PYTHONIOENCODING: utf-8
+    command: celery -A questions worker --loglevel info
+    volumes:
+      - .:/quiz
+    depends_on:
+      - redis
+    links:
+      - web
+      - redis
+
+volumes:
+  pgdb:

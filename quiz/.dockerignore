@@ -1,0 +1,9 @@
+.git
+Dockerfile
+.gitignore
+README.md
+venv/
+db.sqlite3
+celerybeat-schedule
+docker-compose.yml
+.env

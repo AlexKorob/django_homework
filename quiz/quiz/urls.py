@@ -21,7 +21,7 @@ from rest_framework_swagger.views import get_swagger_view
 from rest_framework.authtoken.views import obtain_auth_token
 from questions.urls import router
 from questions import api_views
-
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,6 +31,8 @@ urlpatterns = [
     path('api-token-auth/', obtain_auth_token),
     path('swagger/', get_swagger_view(title='API')),
 ]
+
+urlpatterns += staticfiles_urlpatterns()
 
 if settings.DEBUG:
     import debug_toolbar
