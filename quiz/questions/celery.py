@@ -6,8 +6,8 @@ from django.conf import settings
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'quiz.settings')
 
 app = Celery('quiz',
-             broker="amqp://redis:6379/",
-             backend="amqp://redis:6379/")
+             broker="redis://redis:6379",
+             backend="redis://redis:6379")
 
 app.autodiscover_tasks()
 
