@@ -4,25 +4,23 @@ services:
   db:
     image: postgres
     restart: always
-    environment:
-      POSTGRES_PASSWORD: $DB_PASSWORD
-      POSTGRES_USER: $DB_USER
-      POSTGRES_DB: $DB_NAME
+    env_file:
+      - ./.env
     volumes:
       - pgdb:/var/lib/postgresql/data
+
   redis:
     image: redis:latest
     restart: always
     hostname: redis
+
   web:
     build: .
+    env_file:
+      - ./.env
     environment:
-      DB_PASSWORD: $DB_PASSWORD
-      DB_USER: $DB_USER
-      DB_NAME: $DB_NAME
-      SECRET_KEY: $SECRET_KEY
-      PYTHONIOENCODING: utf-8
-    command: python3 manage.py runserver 0.0.0.0:8000
+       PYTHONIOENCODING: utf-8
+    command: ./start_proj.sh
     volumes:
       - .:/quiz
     ports:
@@ -30,21 +28,21 @@ services:
     depends_on:
       - db
       - redis
+
   celery:
     build: .
+    env_file:
+      - ./.env
     environment:
-      DB_PASSWORD: $DB_PASSWORD
-      DB_USER: $DB_USER
-      DB_NAME: $DB_NAME
-      SECRET_KEY: $SECRET_KEY
       PYTHONIOENCODING: utf-8
     command: celery -A questions worker --loglevel info
     volumes:
       - .:/quiz
     depends_on:
-      - db
       - redis
     links:
+      - web
       - redis
+
 volumes:
   pgdb:

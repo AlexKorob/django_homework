@@ -24,20 +24,17 @@
   logout
 ```
 
-#### Before start project you need include environment variables:
-
+#### Build docker images, create and run containers:
 ```bash
-  export DB_PASSWORD=123
-  export DB_USER=alex
-  export DB_NAME=quiz
-  export SECRET_KEY='gq-j93$a3u#!1pchw29k7*_8&b^9+0itrz%w=v^5sa79@a^3!-'
+  docker-compose up
 ```
 
-docker-compose run web python3 ./manage.py migrate
-docker-compose run web python3 manage.py createsuperuser
+#### If you want create superuser:
+```bash
+  docker-compose run web python3 manage.py createsuperuser
+```
 
-* If you are installing docker on Linux Mint, on during installation you must
-  do that:
+#### If you are installing docker on Linux Mint, on during installation you must do that:
 ```bash
   echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable" | \
     sudo tee /etc/apt/sources.list.d/

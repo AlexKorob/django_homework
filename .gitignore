@@ -4,3 +4,5 @@ saved
 *.mo
 *.sqlite3
 celerybeat-schedule
+celerybeat-schedule.db
+.env

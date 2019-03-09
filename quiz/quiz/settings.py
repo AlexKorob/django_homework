@@ -91,9 +91,9 @@ WSGI_APPLICATION = 'quiz.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env["DB_NAME"],
-        'USER': env["DB_USER"],
-        'PASSWORD': env["DB_PASSWORD"],
+        'NAME': env["POSTGRES_NAME"],
+        'USER': env["POSTGRES_USER"],
+        'PASSWORD': env["POSTGRES_PASSWORD"],
         'HOST': 'db',
         'PORT': 5432
     }
@@ -160,7 +160,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": ["redis"],
+            "hosts": [(env["REDIS_HOST"], env["REDIS_PORT"])],
         },
     },
 }
