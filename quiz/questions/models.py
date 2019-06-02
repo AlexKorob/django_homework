@@ -1,4 +1,6 @@
 from django.db import models
+from django.shortcuts import reverse
+
 
 class Test(models.Model):
     STATUS_DRAFT = 10
@@ -19,10 +21,13 @@ class Test(models.Model):
     updated_on = models.DateField(auto_now=True)
 
     class Meta:
-       ordering = ['-created_on']
+        ordering = ['-created_on']
+
+    def get_absolute_url(self):
+        return reverse("list_tests")
 
     def __str__(self):
-       return self.title
+        return self.title
 
 
 class Question(models.Model):
@@ -32,12 +37,26 @@ class Question(models.Model):
     def __str__(self):
         return self.question
 
+    def get_absolute_url(self):
+        return reverse("questions_show")
+
 
 class Testrun(models.Model):
     name = models.CharField(max_length=40, blank=True)
-    test = models.ForeignKey(Test, related_name='testrun', on_delete=models.CASCADE)
-    question = models.ForeignKey(Question, related_name='testrun', on_delete=models.CASCADE)
-    answer = models.TextField(max_length=500, error_messages={"required": "Поле ответа не может быть пустым"})
+    test = models.ForeignKey(Test, related_name='testruns', on_delete=models.CASCADE)
+    answer = models.ManyToManyField(Question, related_name="testruns", through="TestrunAnswer")
+
+    class Meta:
+        ordering = ['id']
 
     def __str__(self):
-        return str(self.id) + " | " + str(self.name) + " | " + str(self.test)
+        return str(self.name) + " | " + str(self.test)
+
+
+class TestrunAnswer(models.Model):
+    testrun = models.ForeignKey(Testrun, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="testrun_answer")
+    answer = models.CharField(max_length=120)
+
+    def __str__(self):
+        return  str(self.testrun) + " | " + str(self.question) + " | " + str(self.answer)

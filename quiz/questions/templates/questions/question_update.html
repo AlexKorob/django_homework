@@ -1,0 +1,23 @@
+{% extends "questions/base.html" %}
+
+
+{% block content %}
+  <div class="card w-75">
+    <div class="card-body question">
+      <form action="" method="POST">
+        {% csrf_token %}
+        <h4 class="card-title">Изменить вопрос</h4>
+          <div class="text-center">
+            {% if errors %}
+              <div class="alert-danger">
+                {{ errors }}
+              </div>
+            {% endif %}
+            {{ form.question }}<br>
+            <input type="submit" name="update" class="btn_test btn btn-primary" value="Изменить">
+            <input type="submit" name="delete" class="btn btn-danger my-2 my-sm-0" value="Удалить">
+          </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -56,3 +56,9 @@ header>nav>.search_form {
   color: #ccc;
   font-size: 12px;
 }
+/*************/
+.button_bottom {
+  position: fixed;
+  bottom: 40px;
+  left: 15px;
+}

@@ -1,0 +1,27 @@
+{% extends "questions/base.html" %}
+
+{% block content %}
+
+<div class="card w-75">
+  <div class="card-body">
+    <h3 class="card-title">{{ test.title }}</h3>
+    <div class="text-center">
+      <p class="description">{{ test.description }}</p>
+    </div>
+      <h3 style="padding-left: 5px; margin-top: 30px;">Тест включает такие вопросы: </h3>
+      <ul style="padding-left: 20px;">
+      {% for question in questions %}
+        <li>{{question}}</li>
+      {% endfor %}
+      </ul>
+      <div class="text-center">
+        <a href="{% url 'test' test.id %}" class=" btn btn-primary ">Пройти тест</a>
+      </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block footer_btn %}
+<a href = "{% url 'test_update' test.id %}" class="btn btn-primary my-2 my-sm-0" style="display: block; margin-bottom: 5px;"> Изменить Тест </a>
+{% endblock %}

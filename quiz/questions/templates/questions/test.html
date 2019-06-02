@@ -1,0 +1,32 @@
+{% extends "questions/base.html" %}
+
+{% block content %}
+  <div class="card w-75">
+    <div class="card-body question">
+      {% if errors %}
+        <div class="alert alert-danger">
+          {% for error in errors %}
+            {{ error }}
+          {% endfor %}
+        </div>
+      {% endif %}
+      <h4 class="card-title" style="margin-bottom: 30px;"><b>Тест</b></h4>
+      <form action="{% url 'test' test_id %}" method="POST">
+        {% csrf_token %}
+        {% for form, question in data %}
+        <h4 class="card-title">{{ question }}</h4>
+          <div class="text-center" style="margin-bottom: 50px;">
+            <!-- <input type="hidden" name="form-TOTAL_FORMS" value="1">
+            <input type="hidden" name="form-INITIAL_FORMS" value="0">
+            <input type="hidden" name="form-MIN_NUM_FORMS" value="0">
+            <input type="hidden" name="form-MAX_NUM_FORMS" value="10"> -->
+            <textarea name="answer-{{ question.id }}" cols="70" rows="7" style="resize:none;">{% if form.data %}{{form.data}}{% endif %}</textarea>
+          </div>
+        {% endfor %}
+        <div class="text-center">
+          <input type="submit" name="final" class="btn_test btn btn-primary" value="Завершить">
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
